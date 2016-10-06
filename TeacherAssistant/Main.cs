@@ -1,0 +1,148 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using TeacherAssistant_Model;
+using TeacherAssistant_BLL;
+using System.IO;
+using NPOI.HSSF.UserModel;
+using NPOI.SS.UserModel;
+using TeacherAssistant_DAL;
+
+namespace TeacherAssistant
+{
+    public partial class Main : Form
+    {
+        public Main()
+        {
+            InitializeComponent();
+            ShowLabels();
+        }
+
+        private void ShowLabels()
+        {
+            Course c = CourseManager.GetCoursesByCourseId(UserInfo.CourseId);
+            Exam e = CourseManager.GetExamByCourseId(UserInfo.CourseId);
+            UserInfo.CourseNo = c.CourseNo;
+            UserInfo.CourseName = c.CourseName;
+
+            ExamNoLabel.Text = e.ExamNo;
+            CourseNameLabel.Text = c.CourseName;
+            CourseNoLabel.Text = c.CourseNo;
+            SemesterLabel.Text = c.Semester;
+            CreditLabel.Text = c.Credit.ToString();
+            CourseTypeLabel.Text = c.Type.ToString();
+
+            TeacherNameLable.Text = UserInfo.TeacherName;
+            ExamTimeLabel.Text = e.ExamTime.ToString();
+            switch (c.Type)
+            {
+                case CourseType.本科课程:
+                    GradeLabel.Text = "十分制";
+                    break;
+                case CourseType.MBA课程:
+                    GradeLabel.Text = "五分制";
+                    break;
+                case CourseType.研究生课程:
+                    GradeLabel.Text = "五分制";
+                    break;
+                default:
+                    MessageBox.Show("不存在该类型的课程");
+                    break;
+            }
+        }
+
+
+        private void dataGridView1_RowPostPaint(object sender, DataGridViewRowPostPaintEventArgs e)
+        {
+            //自动编号，与数据无关
+            Rectangle rectangle = new Rectangle(e.RowBounds.Location.X, e.RowBounds.Location.Y,
+                dataGridView1.RowHeadersWidth - 4, e.RowBounds.Height);
+            TextRenderer.DrawText(e.Graphics, (e.RowIndex + 1).ToString(),
+                dataGridView1.RowHeadersDefaultCellStyle.Font, rectangle,
+                dataGridView1.RowHeadersDefaultCellStyle.ForeColor,
+                TextFormatFlags.VerticalCenter | TextFormatFlags.Right);
+        }
+
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            if (this.Visible == true)
+            {
+                this.Hide();
+                Application.Exit();
+            }
+        }
+
+        private void toolStripButton1_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Title = "请选择学生excel文件";
+            ofd.Filter = "excel文件|*.xls|excel文件|*.xlsx";
+            ofd.FileOk += Ofd_FileOk;
+            ofd.ShowDialog();
+
+
+        }
+
+        private void Ofd_FileOk(object sender, CancelEventArgs e)
+        {
+            var ofd = (OpenFileDialog)sender;
+            var filePath = ofd.FileName;
+
+
+            using (FileStream fs = File.Open(filePath, FileMode.Open,
+FileAccess.Read, FileShare.ReadWrite))
+            {
+                HSSFWorkbook wk = new HSSFWorkbook(fs);   //把xls文件中的数据写入wk中
+                var sheet = wk.GetSheetAt(0);             //读取第一个sheet
+
+
+                Form a = new Form();
+                ProgressBar bar = new ProgressBar();
+                bar.Value = 0;
+                bar.Minimum = 0;
+                bar.Maximum = sheet.LastRowNum - 3;
+                bar.Location = new System.Drawing.Point(100, 100);
+                bar.Parent = a;
+                a.StartPosition = FormStartPosition.CenterScreen;
+                a.Show();
+                a.TopMost = true;
+                bar.Show();
+
+
+                for (int j = 4; j <= sheet.LastRowNum; j++)  //从第五行开始是学生数据格式为“学号/姓名(专业)”
+                {
+                    IRow row = sheet.GetRow(j);  //读取当前行数据
+                    if (row != null)
+                    {
+                        ICell cell = row.GetCell(0);
+                        string s = cell.ToString();
+                        if (!string.IsNullOrWhiteSpace(s))
+                        {
+                            int pos1 = s.IndexOf('/');
+                            int pos2 = s.IndexOf('(');
+                            int pos3 = s.IndexOf(')');
+                            string stuNo = s.Substring(0, pos1);
+                            string stuName = s.Substring(pos1 + 1, pos2 - pos1 - 1);
+                            string major = s.Substring(pos2 + 1, pos3 - pos2 - 1);
+                            StuManager.ImportStu(stuNo, stuName, major);
+                        }
+                    }
+                    bar.Value += 1;
+                    bar.Refresh();
+                }
+
+                if (MessageBox.Show("导入完成", "Confirm Message", MessageBoxButtons.OK) == DialogResult.OK)
+                {
+                    a.Close();
+                }
+            }
+
+        }
+    }
+}

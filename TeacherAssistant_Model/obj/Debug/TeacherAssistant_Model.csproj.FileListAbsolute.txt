@@ -1,0 +1,14 @@
+c:\users\m_k_cc\desktop\TeacherAssistant\TeacherAssistant_Model\bin\Debug\TeacherAssistant_Model.dll
+c:\users\m_k_cc\desktop\TeacherAssistant\TeacherAssistant_Model\bin\Debug\TeacherAssistant_Model.pdb
+c:\users\m_k_cc\desktop\TeacherAssistant\TeacherAssistant_Model\obj\Debug\TeacherAssistant_Model.csprojResolveAssemblyReference.cache
+c:\users\m_k_cc\desktop\TeacherAssistant\TeacherAssistant_Model\obj\Debug\TeacherAssistant_Model.dll
+c:\users\m_k_cc\desktop\TeacherAssistant\TeacherAssistant_Model\obj\Debug\TeacherAssistant_Model.pdb
+C:\Users\icecode\Desktop\TeacherAssistant\TeacherAssistant_Model\bin\Debug\TeacherAssistant_Model.dll
+C:\Users\icecode\Desktop\TeacherAssistant\TeacherAssistant_Model\bin\Debug\TeacherAssistant_Model.pdb
+C:\Users\icecode\Desktop\TeacherAssistant\TeacherAssistant_Model\obj\Debug\TeacherAssistant_Model.csprojResolveAssemblyReference.cache
+C:\Users\icecode\Desktop\TeacherAssistant\TeacherAssistant_Model\obj\Debug\TeacherAssistant_Model.dll
+C:\Users\icecode\Desktop\TeacherAssistant\TeacherAssistant_Model\obj\Debug\TeacherAssistant_Model.pdb
+C:\Users\M_K_CC\Desktop\ConsoleApplication1\TeacherAssistant\TeacherAssistant_Model\bin\Debug\TeacherAssistant_Model.dll
+C:\Users\M_K_CC\Desktop\ConsoleApplication1\TeacherAssistant\TeacherAssistant_Model\bin\Debug\TeacherAssistant_Model.pdb
+C:\Users\M_K_CC\Desktop\ConsoleApplication1\TeacherAssistant\TeacherAssistant_Model\obj\Debug\TeacherAssistant_Model.dll
+C:\Users\M_K_CC\Desktop\ConsoleApplication1\TeacherAssistant\TeacherAssistant_Model\obj\Debug\TeacherAssistant_Model.pdb

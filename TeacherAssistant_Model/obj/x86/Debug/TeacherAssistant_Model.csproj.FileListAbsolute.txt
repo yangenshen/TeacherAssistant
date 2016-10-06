@@ -1,0 +1,8 @@
+c:\users\m_k_cc\desktop\TeacherAssistant\TeacherAssistant_Model\bin\x86\Debug\TeacherAssistant_Model.dll
+c:\users\m_k_cc\desktop\TeacherAssistant\TeacherAssistant_Model\bin\x86\Debug\TeacherAssistant_Model.pdb
+c:\users\m_k_cc\desktop\TeacherAssistant\TeacherAssistant_Model\obj\x86\Debug\TeacherAssistant_Model.dll
+c:\users\m_k_cc\desktop\TeacherAssistant\TeacherAssistant_Model\obj\x86\Debug\TeacherAssistant_Model.pdb
+C:\Users\icecode\Desktop\TeacherAssistant\TeacherAssistant_Model\bin\x86\Debug\TeacherAssistant_Model.dll
+C:\Users\icecode\Desktop\TeacherAssistant\TeacherAssistant_Model\bin\x86\Debug\TeacherAssistant_Model.pdb
+C:\Users\icecode\Desktop\TeacherAssistant\TeacherAssistant_Model\obj\x86\Debug\TeacherAssistant_Model.dll
+C:\Users\icecode\Desktop\TeacherAssistant\TeacherAssistant_Model\obj\x86\Debug\TeacherAssistant_Model.pdb

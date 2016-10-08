@@ -199,6 +199,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="images\import.jpg" />
+    <None Include="images\setting.jpg" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

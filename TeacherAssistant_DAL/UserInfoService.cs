@@ -16,7 +16,6 @@ namespace TeacherAssistant_DAL
             if (dt != null && dt.Rows.Count == 1)
             {
                 UserInfo.TeacherNo = userName;
-                UserInfo.Password = password;
                 UserInfo.TeacherName = dt.Rows[0]["TeacherName"].ToString();
                 return true;
             }

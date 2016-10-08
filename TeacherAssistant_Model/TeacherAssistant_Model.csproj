@@ -79,6 +79,9 @@
     <Compile Include="Constant\CourseType.cs" />
     <Compile Include="Course.cs" />
     <Compile Include="Exam.cs" />
+    <Compile Include="Stu.cs" />
+    <Compile Include="StuScore.cs" />
+    <Compile Include="Teach.cs" />
     <Compile Include="UserInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

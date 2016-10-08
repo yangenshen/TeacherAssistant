@@ -10,50 +10,33 @@ namespace TeacherAssistant_DAL
 {
     public class CourseService
     {
-        public static IList<Course> GetCoursesByTeacher(string tNo)
+        public static List<Course> GetTeachCourses(string tNo, string sem)
         {
             List<Course> listC = new List<Course>();
-            string sql = string.Format("select CourseId,CourseName,Semester from Course where TeacherNo = '{0}'", tNo);
+            string sql = string.Format("select T.CourseNo,CourseName from Course as C,Teach as T where T.CourseNo = C.CourseNo and T.Semester = '{0}' and T.TeacherNo = '{1}'", sem, tNo);
             DataTable dt = DBHelper.GetDataTable(sql);
             foreach (DataRow dtRow in dt.Rows)
             {
                 Course c = new Course();
-                c.CourseId = int.Parse(dtRow["CourseId"].ToString());
+                c.CourseNo = dtRow["CourseNo"].ToString();
                 c.CourseName = dtRow["CourseName"].ToString();
-                c.Semester = dtRow["Semester"].ToString();
                 listC.Add(c);
             }
             return listC;
         }
 
-        public static Course GetCourseByCourseId(int cId)
+        public static Course GetCourseByCourseNo(string cNo)
         {
-            string sql = string.Format("select * from Course where CourseId = {0}", cId);
+            string sql = string.Format("select * from Course where CourseNo = '{0}'", cNo);
             DataTable dt = DBHelper.GetDataTable(sql);
             Course c = new Course();
             if (dt != null && dt.Rows.Count == 1)
             {
-                c.Semester = dt.Rows[0]["Semester"].ToString();
-                c.ExamNo = dt.Rows[0]["ExamNo"].ToString();
-                c.Credit = int.Parse(dt.Rows[0]["Credit"].ToString());
                 c.CourseNo = dt.Rows[0]["CourseNo"].ToString();
                 c.CourseName = dt.Rows[0]["CourseName"].ToString();
                 c.Type = (CourseType)int.Parse(dt.Rows[0]["CourseType"].ToString());
             }
             return c;
-        }
-
-        public static Exam GetExamByCourseId(int cId)
-        {
-            string sql = string.Format("select * from Exam where CourseId = {0}", cId);
-            DataTable dt = DBHelper.GetDataTable(sql);
-            Exam e = new Exam();
-            if (dt != null && dt.Rows.Count == 1)
-            {
-                e.ExamNo = dt.Rows[0]["ExamNo"].ToString();
-                e.ExamTime = DateTime.Parse(dt.Rows[0]["ExamTime"].ToString());
-            }
-            return e;
         }
     }
 }

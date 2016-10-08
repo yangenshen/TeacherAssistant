@@ -31,6 +31,8 @@
             this.label1 = new System.Windows.Forms.Label();
             this.Courses = new System.Windows.Forms.ComboBox();
             this.CourseSelectButton = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
+            this.Semesters = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // label1
@@ -61,11 +63,31 @@
             this.CourseSelectButton.UseVisualStyleBackColor = true;
             this.CourseSelectButton.Click += new System.EventHandler(this.CourseSelectButton_Click);
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(103, 45);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(97, 15);
+            this.label2.TabIndex = 3;
+            this.label2.Text = "请选择学期：";
+            // 
+            // Semesters
+            // 
+            this.Semesters.FormattingEnabled = true;
+            this.Semesters.Location = new System.Drawing.Point(195, 41);
+            this.Semesters.Name = "Semesters";
+            this.Semesters.Size = new System.Drawing.Size(261, 23);
+            this.Semesters.TabIndex = 4;
+            this.Semesters.SelectedIndexChanged += new System.EventHandler(this.Semesters_SelectedIndexChanged);
+            // 
             // CourseSelect
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(802, 310);
+            this.Controls.Add(this.Semesters);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.CourseSelectButton);
             this.Controls.Add(this.Courses);
             this.Controls.Add(this.label1);
@@ -81,5 +103,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox Courses;
         private System.Windows.Forms.Button CourseSelectButton;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.ComboBox Semesters;
     }
 }

@@ -80,7 +80,9 @@
     <Compile Include="CourseService.cs" />
     <Compile Include="DBHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ScoreService.cs" />
     <Compile Include="StuService.cs" />
+    <Compile Include="TeachService.cs" />
     <Compile Include="UserInfoService.cs" />
   </ItemGroup>
   <ItemGroup>

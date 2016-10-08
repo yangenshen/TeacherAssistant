@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using TeacherAssistant_Model;
+using TeacherAssistant_BLL;
 namespace TeacherAssistant
 {
     public partial class CourseSelect : Form
@@ -15,19 +16,21 @@ namespace TeacherAssistant
         public CourseSelect()
         {
             InitializeComponent();
-            DataBinding();
-            Courses.SelectedItem = Courses.Items[Courses.Items.Count - 1];
-            if (Courses.Items.Count == 1)
-            {
-                CourseSelectButton.Visible = false;
-            }
+            ShowSemesters();
+            ShowCourses();
         }
 
-        private void DataBinding()
+        private void ShowSemesters()
         {
-            IList<Course> listC = TeacherAssistant_BLL.CourseManager.GetCoursesByTeacher(UserInfo.TeacherNo);
+            List<string> listS = TeachManager.GetSemesters(UserInfo.TeacherNo);
+            Semesters.DataSource = listS;
+        }
+
+        private void ShowCourses()
+        {
+            List<Course> listC = CourseManager.GetTeachCourses(UserInfo.TeacherNo,Semesters.SelectedItem.ToString());
             Courses.DataSource = listC;
-            Courses.ValueMember = "CourseId";
+            Courses.ValueMember = "CourseNo";
             Courses.DisplayMember = "CourseName";
         }
 
@@ -47,10 +50,17 @@ namespace TeacherAssistant
                 MessageBox.Show("请选择课程信息");
                 return;
             }
-            UserInfo.CourseId = int.Parse(Courses.SelectedValue.ToString());
+            UserInfo.Semester = Semesters.SelectedItem.ToString();
+            UserInfo.CourseNo = Courses.SelectedValue.ToString();
+            UserInfo.CourseName = Courses.SelectedItem.ToString();
             this.Hide();
             Main main = new Main();
             main.Show();
+        }
+
+        private void Semesters_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ShowCourses();
         }
     }
 }

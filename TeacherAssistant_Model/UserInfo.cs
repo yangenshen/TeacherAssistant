@@ -10,8 +10,8 @@ namespace TeacherAssistant_Model
     {
         public static string TeacherNo { get; set; }
         public static string TeacherName { get; set; }
-        public static string Password { get; set; }
-        public static int CourseId { get; set; }
+        //public static int CourseId { get; set; }
+        public static string Semester { get; set; }
         public static string CourseNo { get; set; }
         public static string CourseName { get; set; }
     }

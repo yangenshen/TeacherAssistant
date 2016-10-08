@@ -10,32 +10,21 @@ namespace TeacherAssistant_BLL
 {
     public class CourseManager
     {
-        public static IList<Course> GetCoursesByTeacher(string tNo)
+        public static List<Course> GetTeachCourses(string tNo,string sem)
         {
-            var listC = CourseService.GetCoursesByTeacher(tNo);
-            foreach (var c in listC)
-            {
-                c.CourseName += "-" + c.Semester;
-            }
+            var listC = CourseService.GetTeachCourses(tNo,sem);
             if (listC.Count == 0)
             {
-                listC.Add(new Course { CourseId = -1, CourseName = "暂无课程信息" });
-            }
-            else
-            {
-                listC.Add(new Course { CourseId = -1, CourseName = "请选择课程" });
+                listC.Add(new Course { CourseNo = "-1", CourseName = "暂无课程信息" });
             }
             return listC;
         }
 
-        public static Course GetCoursesByCourseId(int cId)
-        {
-            return CourseService.GetCourseByCourseId(cId);
-        }
+        
 
-        public static Exam GetExamByCourseId(int cId)
+        public static Course GetCourseByCourseNo(string cNo)
         {
-            return CourseService.GetExamByCourseId(cId);
+            return CourseService.GetCourseByCourseNo(cNo);
         }
     }
 }

@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace TeacherAssistant_Model
 {
-    public class Exam
+    public class Stu
     {
-        public string ExamNo { get; set; }
-        public DateTime ExamTime { get; set; }
+        public string StuNo { get; set; }
+        public string StuName { get; set; }
+        public string Major { get; set; }
     }
 }

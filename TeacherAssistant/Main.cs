@@ -1,18 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using TeacherAssistant_Model;
-using TeacherAssistant_BLL;
-using System.IO;
-using NPOI.HSSF.UserModel;
+﻿using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
-using TeacherAssistant_DAL;
+using System;
+using System.ComponentModel;
+using System.IO;
+using System.Windows.Forms;
+using TeacherAssistant_BLL;
+using TeacherAssistant_Model;
 
 namespace TeacherAssistant
 {
@@ -22,22 +15,37 @@ namespace TeacherAssistant
         {
             InitializeComponent();
             ShowLabels();
+            ShowDataGridView();
+        }
+
+        private void ShowDataGridView()
+        {
+            var listScore = ScoreManager.GetScores(UserInfo.CourseNo,UserInfo.Semester);
+            foreach (var score in listScore)
+            {
+                int index = dataGridView1.Rows.Add();
+                dataGridView1.Rows[index].Cells[0].Value = index;
+                dataGridView1.Rows[index].Cells[1].Value = score.Auto == true ? "自动" : "手动";
+                dataGridView1.Rows[index].Cells[2].Value = score.StuNo;
+                dataGridView1.Rows[index].Cells[3].Value = score.StuName;
+                dataGridView1.Rows[index].Cells[4].Value = score.FinalScore;
+                dataGridView1.Rows[index].Cells[5].Value = score.Grade;
+            }
         }
 
         private void ShowLabels()
         {
-            Course c = CourseManager.GetCoursesByCourseId(UserInfo.CourseId);
-            Exam e = CourseManager.GetExamByCourseId(UserInfo.CourseId);
-            UserInfo.CourseNo = c.CourseNo;
-            UserInfo.CourseName = c.CourseName;
+            Course c = CourseManager.GetCourseByCourseNo(UserInfo.CourseNo);
+            Teach t = TeachManager.GetTeachInfo(UserInfo.CourseNo, UserInfo.TeacherNo, UserInfo.Semester);
+            Exam e = TeachManager.GetExamByExamNo(t.ExamNo);
 
             ExamNoLabel.Text = e.ExamNo;
             CourseNameLabel.Text = c.CourseName;
             CourseNoLabel.Text = c.CourseNo;
-            SemesterLabel.Text = c.Semester;
-            CreditLabel.Text = c.Credit.ToString();
+            SemesterLabel.Text = UserInfo.Semester;
+            CreditLabel.Text = t.Credit.ToString();
             CourseTypeLabel.Text = c.Type.ToString();
-
+            RuleLabel.Text = t.RuleNo.ToString();
             TeacherNameLable.Text = UserInfo.TeacherName;
             ExamTimeLabel.Text = e.ExamTime.ToString();
             switch (c.Type)
@@ -57,17 +65,6 @@ namespace TeacherAssistant
             }
         }
 
-
-        private void dataGridView1_RowPostPaint(object sender, DataGridViewRowPostPaintEventArgs e)
-        {
-            //自动编号，与数据无关
-            Rectangle rectangle = new Rectangle(e.RowBounds.Location.X, e.RowBounds.Location.Y,
-                dataGridView1.RowHeadersWidth - 4, e.RowBounds.Height);
-            TextRenderer.DrawText(e.Graphics, (e.RowIndex + 1).ToString(),
-                dataGridView1.RowHeadersDefaultCellStyle.Font, rectangle,
-                dataGridView1.RowHeadersDefaultCellStyle.ForeColor,
-                TextFormatFlags.VerticalCenter | TextFormatFlags.Right);
-        }
 
         protected override void OnClosing(CancelEventArgs e)
         {
@@ -93,8 +90,6 @@ namespace TeacherAssistant
         {
             var ofd = (OpenFileDialog)sender;
             var filePath = ofd.FileName;
-
-
             using (FileStream fs = File.Open(filePath, FileMode.Open,
 FileAccess.Read, FileShare.ReadWrite))
             {

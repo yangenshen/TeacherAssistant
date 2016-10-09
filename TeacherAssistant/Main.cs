@@ -20,6 +20,7 @@ namespace TeacherAssistant
 
         private void ShowDataGridView()
         {
+            dataGridView1.Rows.Clear();
             var listScore = ScoreManager.GetScores(UserInfo.CourseNo,UserInfo.Semester);
             foreach (var score in listScore)
             {
@@ -96,19 +97,23 @@ FileAccess.Read, FileShare.ReadWrite))
                 HSSFWorkbook wk = new HSSFWorkbook(fs);   //把xls文件中的数据写入wk中
                 var sheet = wk.GetSheetAt(0);             //读取第一个sheet
 
-
+                #region ProgressBar
                 Form a = new Form();
                 ProgressBar bar = new ProgressBar();
                 bar.Value = 0;
                 bar.Minimum = 0;
                 bar.Maximum = sheet.LastRowNum - 3;
-                bar.Location = new System.Drawing.Point(100, 100);
+                bar.Location = new System.Drawing.Point(50, 10);
+                bar.Width = 200;
                 bar.Parent = a;
+                a.Text = "导入学生数据";
+                a.Width = 300;
+                a.Height = 100;
                 a.StartPosition = FormStartPosition.CenterScreen;
                 a.Show();
                 a.TopMost = true;
                 bar.Show();
-
+                #endregion
 
                 for (int j = 4; j <= sheet.LastRowNum; j++)  //从第五行开始是学生数据格式为“学号/姓名(专业)”
                 {
@@ -136,8 +141,20 @@ FileAccess.Read, FileShare.ReadWrite))
                 {
                     a.Close();
                 }
+                ShowDataGridView();
             }
 
+        }
+
+        private void toolStripButton2_Click(object sender, EventArgs e)
+        {
+            Assessment assm = new Assessment();
+            assm.ShowDialog();            
+        }
+
+        private void ReloadButton_Click(object sender, EventArgs e)
+        {
+            ShowDataGridView();
         }
     }
 }

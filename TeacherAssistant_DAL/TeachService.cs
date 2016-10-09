@@ -38,7 +38,8 @@ namespace TeacherAssistant_DAL
             return listS;
         }
 
-        public static Teach GetTeachInfo(string cNo,string tNo,string sem)
+
+        public static Teach GetTeachInfo(string cNo, string tNo, string sem)
         {
             string sql = string.Format("select * from Teach where CourseNo = '{0}' and TeacherNo = '{1}' and Semester = '{2}'", cNo, tNo, sem);
             DataTable dt = DBHelper.GetDataTable(sql);
@@ -54,5 +55,38 @@ namespace TeacherAssistant_DAL
             }
             return t;
         }
+
+        #region Assess
+        public static List<Assessment> GetAssessments()
+        {
+            string sql = string.Format("select * from Assessment");
+            DataTable dt = DBHelper.GetDataTable(sql);
+            List<Assessment> listA = new List<Assessment>();
+            if (dt != null && dt.Rows.Count != 0)
+            {
+                foreach (DataRow row in dt.Rows)
+                {
+                    listA.Add(new Assessment()
+                    {
+                        AssessType = int.Parse(row["AssessType"].ToString()),
+                        AssessName = row["AssessName"].ToString()
+                    });
+                }
+            }
+            return listA;
+        }
+
+        public static bool AddAssess(string aName, int aType, float aProp, string cNo, string sem)
+        {
+            string sql = string.Format("insert into ??(AssessName,AssessType,AssessProp,CourseNo,Semester) values('{0}',{1},{2},'{3}','{4}'", aName, aType, aProp, cNo, sem);
+            return DBHelper.ExecuteNonQuery(sql);
+        }
+
+        public static bool UpdateAssess(string aName, float aProp, string cNo, string sem)
+        {
+            string sql = string.Format("update ?? set AssessProp = {0} where AssessName = '{1}' and CourseNo = '{2}' and Semster = '{3}'", aProp, aName, cNo, sem);
+            return DBHelper.ExecuteNonQuery(sql);
+        }
+        #endregion
     }
 }

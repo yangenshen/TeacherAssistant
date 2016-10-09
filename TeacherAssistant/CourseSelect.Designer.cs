@@ -48,14 +48,14 @@
             // 
             this.Courses.BackColor = System.Drawing.Color.WhiteSmoke;
             this.Courses.FormattingEnabled = true;
-            this.Courses.Location = new System.Drawing.Point(202, 95);
+            this.Courses.Location = new System.Drawing.Point(195, 95);
             this.Courses.Name = "Courses";
-            this.Courses.Size = new System.Drawing.Size(255, 23);
+            this.Courses.Size = new System.Drawing.Size(262, 23);
             this.Courses.TabIndex = 1;
             // 
             // CourseSelectButton
             // 
-            this.CourseSelectButton.Location = new System.Drawing.Point(173, 210);
+            this.CourseSelectButton.Location = new System.Drawing.Point(195, 169);
             this.CourseSelectButton.Name = "CourseSelectButton";
             this.CourseSelectButton.Size = new System.Drawing.Size(112, 45);
             this.CourseSelectButton.TabIndex = 2;
@@ -85,13 +85,14 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(802, 310);
+            this.ClientSize = new System.Drawing.Size(534, 252);
             this.Controls.Add(this.Semesters);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.CourseSelectButton);
             this.Controls.Add(this.Courses);
             this.Controls.Add(this.label1);
             this.Name = "CourseSelect";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "CourseSelect";
             this.ResumeLayout(false);
             this.PerformLayout();

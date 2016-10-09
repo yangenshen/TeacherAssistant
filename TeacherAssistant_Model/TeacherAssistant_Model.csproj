@@ -76,6 +76,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assessment.cs" />
     <Compile Include="Constant\CourseType.cs" />
     <Compile Include="Course.cs" />
     <Compile Include="Exam.cs" />

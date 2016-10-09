@@ -38,7 +38,7 @@
             this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.button1 = new System.Windows.Forms.Button();
+            this.ReloadButton = new System.Windows.Forms.Button();
             this.dataGridView2 = new System.Windows.Forms.DataGridView();
             this.Column7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -163,15 +163,16 @@
             this.Column6.Name = "Column6";
             this.Column6.ReadOnly = true;
             // 
-            // button1
+            // ReloadButton
             // 
-            this.button1.Location = new System.Drawing.Point(1035, 99);
-            this.button1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(99, 34);
-            this.button1.TabIndex = 3;
-            this.button1.Text = "重载得分";
-            this.button1.UseVisualStyleBackColor = true;
+            this.ReloadButton.Location = new System.Drawing.Point(1035, 99);
+            this.ReloadButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.ReloadButton.Name = "ReloadButton";
+            this.ReloadButton.Size = new System.Drawing.Size(99, 34);
+            this.ReloadButton.TabIndex = 3;
+            this.ReloadButton.Text = "重载得分";
+            this.ReloadButton.UseVisualStyleBackColor = true;
+            this.ReloadButton.Click += new System.EventHandler(this.ReloadButton_Click);
             // 
             // dataGridView2
             // 
@@ -462,10 +463,10 @@
             // 
             // linkLabel1
             // 
-            this.linkLabel1.AutoSize = true;
-            this.linkLabel1.Location = new System.Drawing.Point(284, 678);
+            this.linkLabel1.LinkArea = new System.Windows.Forms.LinkArea(0, 6);
+            this.linkLabel1.Location = new System.Drawing.Point(295, 665);
             this.linkLabel1.Name = "linkLabel1";
-            this.linkLabel1.Size = new System.Drawing.Size(97, 15);
+            this.linkLabel1.Size = new System.Drawing.Size(160, 30);
             this.linkLabel1.TabIndex = 28;
             this.linkLabel1.TabStop = true;
             this.linkLabel1.Text = "课程成绩报告";
@@ -486,6 +487,7 @@
             this.toolStripButton2.Name = "toolStripButton2";
             this.toolStripButton2.Size = new System.Drawing.Size(93, 24);
             this.toolStripButton2.Text = "考核设置";
+            this.toolStripButton2.Click += new System.EventHandler(this.toolStripButton2_Click);
             // 
             // toolStripButton3
             // 
@@ -509,7 +511,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1228, 709);
+            this.ClientSize = new System.Drawing.Size(1228, 728);
             this.Controls.Add(this.linkLabel1);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.dataGridView3);
@@ -534,7 +536,7 @@
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.dataGridView2);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.ReloadButton);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.ExamNoLabel);
             this.Controls.Add(this.label1);
@@ -542,6 +544,7 @@
             this.MainMenuStrip = this.menuStrip1;
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "Main";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Main";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
@@ -560,7 +563,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label ExamNoLabel;
         private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button ReloadButton;
         private System.Windows.Forms.DataGridView dataGridView2;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column7;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column8;

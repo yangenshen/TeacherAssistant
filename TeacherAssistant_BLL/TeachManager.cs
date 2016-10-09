@@ -25,5 +25,10 @@ namespace TeacherAssistant_BLL
             return TeachService.GetTeachInfo(cNo, tNo, sem);
         }
 
+        public static List<Assessment> GetAssessments()
+        {
+            return TeachService.GetAssessments();
+        }
+
     }
 }

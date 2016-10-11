@@ -28,7 +28,7 @@ namespace TeacherAssistant_BLL
                 string newDetails = ss.AssessDetails + detail;
                 try
                 {
-                    ScoreService.AddAssessForStu(ss.StuNo, cNo, sem, newDetails);
+                    ScoreService.UpdateAssessForStu(ss.StuNo, cNo, sem, newDetails);
                 }
                 catch (Exception e)
                 {
@@ -38,10 +38,15 @@ namespace TeacherAssistant_BLL
             return true;
         }
 
+        public static StuScore GetStuScore(string cNo,string sNo,string sem)
+        {
+            return ScoreService.GetStuCourseScore(cNo, sNo, sem);
+        }
+
         public static bool ImportStuScore(string cNo, string sNo, string sem)
         {
 
-            if (ScoreService.GetStuCourseScore(cNo, sNo, sem).Grade == null)
+            if (GetStuScore(cNo, sNo, sem).Grade == null)
             {
                 return ScoreService.ImportStuScore(sNo, cNo, sem);
             }

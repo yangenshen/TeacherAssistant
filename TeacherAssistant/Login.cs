@@ -18,7 +18,6 @@ namespace TeacherAssistant_UI
         public Login()
         {
             InitializeComponent();
-
         }
 
         private void LoginButton_Click(object sender, EventArgs e)

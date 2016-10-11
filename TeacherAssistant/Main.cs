@@ -3,6 +3,7 @@ using NPOI.SS.UserModel;
 using System;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 using TeacherAssistant_BLL;
 using TeacherAssistant_Model;
@@ -20,8 +21,19 @@ namespace TeacherAssistant
 
         private void ShowDataGridView()
         {
+            ///显示具体得分情况
             dataGridView1.Rows.Clear();
-            var listScore = ScoreManager.GetScores(UserInfo.CourseNo,UserInfo.Semester);
+            var listScore = ScoreManager.GetScores(UserInfo.CourseNo, UserInfo.Semester);
+            //多少考核方式
+            var details = listScore[0].AssessDetails;
+            string[] detailCol = details.Split(';');
+            int cols = detailCol.Length - 1;
+            //for(int i = 0; i < cols; i++)
+            //{
+                
+            //    int col = dataGridView1.Columns.Add();
+            //}
+            //显示数据
             foreach (var score in listScore)
             {
                 int index = dataGridView1.Rows.Add();
@@ -150,7 +162,7 @@ FileAccess.Read, FileShare.ReadWrite))
         private void toolStripButton2_Click(object sender, EventArgs e)
         {
             Assessment assm = new Assessment();
-            assm.ShowDialog();            
+            assm.ShowDialog();
         }
 
         private void ReloadButton_Click(object sender, EventArgs e)

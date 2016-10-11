@@ -65,7 +65,7 @@ namespace TeacherAssistant_DAL
             return DBHelper.ExecuteNonQuery(sql);
         }
 
-        public static bool AddAssessForStu(string sNo,string cNo,string sem,string details)
+        public static bool UpdateAssessForStu(string sNo,string cNo,string sem,string details)
         {
             string sql = string.Format("update StuScore set AssessDetails = '{0}' where StuNo = '{1}' and CourseNo = '{2}' and Semester = '{3}'", details, sNo, cNo, sem);
             return DBHelper.ExecuteNonQuery(sql);

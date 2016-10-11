@@ -30,5 +30,9 @@ namespace TeacherAssistant_BLL
             return TeachService.GetAssessments();
         }
 
+        public static bool AddAssess(string aName, int aType, float point, string cNo, string sem)
+        {
+            return TeachService.AddAssess(aName, aType, point, cNo, sem);
+        }
     }
 }

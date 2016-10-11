@@ -131,6 +131,7 @@ FileAccess.Read, FileShare.ReadWrite))
                             string stuName = s.Substring(pos1 + 1, pos2 - pos1 - 1);
                             string major = s.Substring(pos2 + 1, pos3 - pos2 - 1);
                             StuManager.ImportStu(stuNo, stuName, major);
+                            ScoreManager.ImportStuScore(UserInfo.CourseNo, stuNo, UserInfo.Semester);
                         }
                     }
                     bar.Value += 1;

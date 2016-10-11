@@ -9,7 +9,6 @@ namespace TeacherAssistant_Model
     public class Teach
     {
         public string CourseNo { get; set; }
-
         public string TeacherNo { get; set; }
         public string Semester { get; set; }        //格式：2016.上(下)
         public int Credit { get; set; }             //学分

@@ -36,9 +36,9 @@
             this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.AddAssessButton = new System.Windows.Forms.Button();
-            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.DefaultPoint = new System.Windows.Forms.TextBox();
             this.Assessments = new System.Windows.Forms.ComboBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.AssessName = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -104,9 +104,9 @@
             // 
             this.groupBox1.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.groupBox1.Controls.Add(this.AddAssessButton);
-            this.groupBox1.Controls.Add(this.textBox2);
+            this.groupBox1.Controls.Add(this.DefaultPoint);
             this.groupBox1.Controls.Add(this.Assessments);
-            this.groupBox1.Controls.Add(this.textBox1);
+            this.groupBox1.Controls.Add(this.AssessName);
             this.groupBox1.Controls.Add(this.label4);
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.label2);
@@ -128,13 +128,13 @@
             this.AddAssessButton.UseVisualStyleBackColor = true;
             this.AddAssessButton.Click += new System.EventHandler(this.AddAssessButton_Click);
             // 
-            // textBox2
+            // DefaultPoint
             // 
-            this.textBox2.Location = new System.Drawing.Point(145, 142);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(71, 30);
-            this.textBox2.TabIndex = 5;
-            this.textBox2.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox2_KeyPress);
+            this.DefaultPoint.Location = new System.Drawing.Point(145, 142);
+            this.DefaultPoint.Name = "DefaultPoint";
+            this.DefaultPoint.Size = new System.Drawing.Size(71, 30);
+            this.DefaultPoint.TabIndex = 5;
+            this.DefaultPoint.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox2_KeyPress);
             // 
             // Assessments
             // 
@@ -144,12 +144,12 @@
             this.Assessments.Size = new System.Drawing.Size(209, 28);
             this.Assessments.TabIndex = 4;
             // 
-            // textBox1
+            // AssessName
             // 
-            this.textBox1.Location = new System.Drawing.Point(145, 40);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(209, 30);
-            this.textBox1.TabIndex = 3;
+            this.AssessName.Location = new System.Drawing.Point(145, 40);
+            this.AssessName.Name = "AssessName";
+            this.AssessName.Size = new System.Drawing.Size(209, 30);
+            this.AssessName.TabIndex = 3;
             // 
             // label4
             // 
@@ -219,9 +219,9 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox DefaultPoint;
         private System.Windows.Forms.ComboBox Assessments;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox AssessName;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;

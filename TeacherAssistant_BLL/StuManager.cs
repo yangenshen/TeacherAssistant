@@ -11,7 +11,11 @@ namespace TeacherAssistant_BLL
     {
         public static bool ImportStu(string sNo, string sName, string major)
         {
-            return StuService.ImportStu(sNo, sName, major);
+            if (StuService.GetStuByStuNo(sNo).StuName == null)
+            {
+                return StuService.ImportStu(sNo, sName, major);
+            }
+            return true;
         }
     }
 }

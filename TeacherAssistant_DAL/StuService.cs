@@ -11,17 +11,8 @@ namespace TeacherAssistant_DAL
     {
         public static bool ImportStu(string sNo, string sName, string major)
         {
-            if (GetStuByStuNo(sNo).StuName == null)
-            {
-                string sql = string.Format("insert into Stu values('{0}','{1}','{2}')", sNo, sName, major);
-                DBHelper.ExecuteNonQuery(sql);
-            }
-            if (ScoreService.GetStuCourseScore(UserInfo.CourseNo, sNo, UserInfo.Semester).Grade == null)
-            {
-                string sql = string.Format("insert into StuScore(StuNo,CourseNo,Semester) values('{0}','{1}','{2}')", sNo, UserInfo.CourseNo, UserInfo.Semester);
-                return DBHelper.ExecuteNonQuery(sql);
-            }
-            return true;
+            string sql = string.Format("insert into Stu values('{0}','{1}','{2}')", sNo, sName, major);
+            return DBHelper.ExecuteNonQuery(sql);
         }
 
         public static Stu GetStuByStuNo(string sNo)

@@ -29,7 +29,7 @@ namespace TeacherAssistant_DAL
                     score.FinalScore = finalScore == "" ? 0 : float.Parse(finalScore);
                     score.StuNo = row["StuNo"].ToString();
                     score.Grade = row["Grade"].ToString();
-                    score.StuName = StuService.GetStuByStuNo(score.StuNo).StuName;
+                    score.AssessDetails = row["AssessDetails"].ToString();
                     listScore.Add(score);
                 }
             }
@@ -52,10 +52,24 @@ namespace TeacherAssistant_DAL
                 var finalScore = dt.Rows[0]["FinalScore"].ToString();
                 score.FinalScore = finalScore == "" ? 0 : float.Parse(finalScore);
                 score.StuNo = sNo;
+                score.AssessDetails = dt.Rows[0]["AssessDetails"].ToString();
                 score.Grade = dt.Rows[0]["Grade"].ToString();
                 score.StuName = StuService.GetStuByStuNo(sNo).StuName;
             }
             return score;
         }
+
+        public static bool ImportStuScore(string sNo, string cNo, string sem)
+        {
+            string sql = string.Format("insert into StuScore(StuNo,CourseNo,Semester) values('{0}','{1}','{2}')", sNo, cNo, sem);
+            return DBHelper.ExecuteNonQuery(sql);
+        }
+
+        public static bool AddAssessForStu(string sNo,string cNo,string sem,string details)
+        {
+            string sql = string.Format("update StuScore set AssessDetails = '{0}' where StuNo = '{1}' and CourseNo = '{2}' and Semester = '{3}'", details, sNo, cNo, sem);
+            return DBHelper.ExecuteNonQuery(sql);
+        }
+
     }
 }

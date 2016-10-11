@@ -76,15 +76,15 @@ namespace TeacherAssistant_DAL
             return listA;
         }
 
-        public static bool AddAssess(string aName, int aType, float aProp, string cNo, string sem)
+        public static bool AddAssess(string aName, int aType, float point, string cNo, string sem)
         {
-            string sql = string.Format("insert into ??(AssessName,AssessType,AssessProp,CourseNo,Semester) values('{0}',{1},{2},'{3}','{4}'", aName, aType, aProp, cNo, sem);
+            string sql = string.Format("insert into CourseAssess(AssessName,AssessType,DefaultPoint,CourseNo,Semester) values('{0}',{1},{2},'{3}','{4}'", aName, aType, point, cNo, sem);
             return DBHelper.ExecuteNonQuery(sql);
         }
 
-        public static bool UpdateAssess(string aName, float aProp, string cNo, string sem)
+        public static bool UpdateAssessProp(string aName, float aProp, string cNo, string sem)
         {
-            string sql = string.Format("update ?? set AssessProp = {0} where AssessName = '{1}' and CourseNo = '{2}' and Semster = '{3}'", aProp, aName, cNo, sem);
+            string sql = string.Format("update CourseAssess set Prop = {0} where AssessName = '{1}' and CourseNo = '{2}' and Semster = '{3}'", aProp, aName, cNo, sem);
             return DBHelper.ExecuteNonQuery(sql);
         }
         #endregion

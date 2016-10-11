@@ -27,7 +27,11 @@ namespace TeacherAssistant
 
         private void AddAssessButton_Click(object sender, EventArgs e)
         {
-           
+            string aName = AssessName.Text;
+            int aType = int.Parse(Assessments.SelectedValue.ToString());
+            float defalutPoint = float.Parse(DefaultPoint.ToString());
+            TeachManager.AddAssess(aName, aType, defalutPoint, UserInfo.CourseNo, UserInfo.Semester);
+            ScoreManager.AddAssessForStu(UserInfo.CourseNo, UserInfo.Semester,aName,defalutPoint);
         }
 
         /// <summary>

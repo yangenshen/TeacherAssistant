@@ -66,6 +66,8 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -74,19 +76,23 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assessment.cs" />
+    <Compile Include="Constant\AssessType.cs" />
     <Compile Include="Constant\CourseType.cs" />
+    <Compile Include="Constant\ScoreType.cs" />
     <Compile Include="Course.cs" />
+    <Compile Include="CourseAssess.cs" />
     <Compile Include="Exam.cs" />
+    <Compile Include="ScoreMethod.cs" />
     <Compile Include="Stu.cs" />
     <Compile Include="StuScore.cs" />
     <Compile Include="Teach.cs" />
     <Compile Include="UserInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

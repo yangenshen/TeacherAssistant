@@ -19,7 +19,7 @@ namespace TeacherAssistant_BLL
             return listSS;
         }
 
-        public static bool AddAssessForStu(string cNo, string sem, string aName, float point)
+        public static bool AddAssessForStu(string cNo, string sem, string aName, string point)
         {
             string detail = string.Format("{0}:{1};", aName, point);
             var listSS = ScoreService.GetScores(cNo, sem);

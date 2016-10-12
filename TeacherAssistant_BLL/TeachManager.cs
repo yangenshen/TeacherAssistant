@@ -30,9 +30,28 @@ namespace TeacherAssistant_BLL
             return TeachService.GetAssessments();
         }
 
-        public static bool AddAssess(string aName, int aType, float point, string cNo, string sem)
+        public static bool AddAssess(string aName, int aType, string point, string cNo, string sem, string pointDetails)
         {
-            return TeachService.AddAssess(aName, aType, point, cNo, sem);
+            return TeachService.AddAssess(aName, aType, point, cNo, sem, pointDetails);
+        }
+
+        public static List<ScoreMethod> GetScoreMethods()
+        {
+            return TeachService.GetScoreMethods();
+        }
+
+        public CourseAssess GetCourseAssessByName(string cNo, string sem, string aName)
+        {
+            return TeachService.GetCourseAssessByName(cNo, sem, aName);
+        }
+
+        public static bool ExistAssess(string cNo, string sem, string aName)
+        {
+            if (TeachService.GetCourseAssessByName(cNo, sem, aName).DefaultPoint == null)
+            {
+                return false;
+            }
+            return true;
         }
     }
 }

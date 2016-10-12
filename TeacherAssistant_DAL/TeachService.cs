@@ -38,6 +38,24 @@ namespace TeacherAssistant_DAL
             return listS;
         }
 
+        public static List<ScoreMethod> GetScoreMethods()
+        {
+            string sql = string.Format("select * from ScoreMethod");
+            DataTable dt = DBHelper.GetDataTable(sql);
+            List<ScoreMethod> listS = new List<ScoreMethod>();
+            if (dt != null && dt.Rows.Count != 0)
+            {
+                foreach (DataRow row in dt.Rows)
+                {
+                    listS.Add(new ScoreMethod()
+                    {
+                        ScoreType = int.Parse(row["ScoreType"].ToString()),
+                        ScoreName = row["ScoreName"].ToString()
+                    });
+                }
+            }
+            return listS;
+        }
 
         public static Teach GetTeachInfo(string cNo, string tNo, string sem)
         {
@@ -76,9 +94,9 @@ namespace TeacherAssistant_DAL
             return listA;
         }
 
-        public static bool AddAssess(string aName, int aType, float point, string cNo, string sem)
+        public static bool AddAssess(string aName, int aType, string point, string cNo, string sem, string pointDetails)
         {
-            string sql = string.Format("insert into CourseAssess(AssessName,AssessType,DefaultPoint,CourseNo,Semester) values('{0}',{1},{2},'{3}','{4}'", aName, aType, point, cNo, sem);
+            string sql = string.Format("insert into CourseAssess(AssessName,AssessType,DefaultPoint,CourseNo,Semester,PointDetails) values('{0}',{1},'{2}','{3}','{4}','{5}')", aName, aType, point, cNo, sem, pointDetails);
             return DBHelper.ExecuteNonQuery(sql);
         }
 
@@ -86,6 +104,21 @@ namespace TeacherAssistant_DAL
         {
             string sql = string.Format("update CourseAssess set Prop = {0} where AssessName = '{1}' and CourseNo = '{2}' and Semster = '{3}'", aProp, aName, cNo, sem);
             return DBHelper.ExecuteNonQuery(sql);
+        }
+
+        public static CourseAssess GetCourseAssessByName(string cNo, string sem, string aName)
+        {
+            string sql = string.Format("select * from CourseAssess where CourseNo = '{0}' and Semester = '{1}' and AssessName = '{2}'", cNo, sem, aName);
+            DataTable dt = DBHelper.GetDataTable(sql);
+            CourseAssess ca = new CourseAssess();
+            if (dt.Rows != null && dt.Rows.Count == 1)
+            {
+                ca.AssessName = dt.Rows[0]["AssessName"].ToString();
+                ca.AssessType = int.Parse(dt.Rows[0]["AssessType"].ToString());
+                ca.DefaultPoint = dt.Rows[0]["DefaultPoint"].ToString();
+                ca.PointDetails = dt.Rows[0]["PointDetails"].ToString();
+            }
+            return ca;
         }
         #endregion
     }

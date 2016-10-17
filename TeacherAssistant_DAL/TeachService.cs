@@ -102,7 +102,7 @@ namespace TeacherAssistant_DAL
 
         public static bool UpdateAssessProp(string aName, int aProp, string cNo, string sem)
         {
-            string sql = string.Format("update CourseAssess set Prop = {0} where AssessName = '{1}' and CourseNo = '{2}' and Semster = '{3}'", aProp, aName, cNo, sem);
+            string sql = string.Format("update CourseAssess set Prop = {0} where AssessName = '{1}' and CourseNo = '{2}' and Semester = '{3}'", aProp, aName, cNo, sem);
             return DBHelper.ExecuteNonQuery(sql);
         }
 
@@ -117,7 +117,7 @@ namespace TeacherAssistant_DAL
                 {
                     CourseAssess ca = new CourseAssess();
                     ca.CourseNo = cNo;
-                    ca.Semster = sem;
+                    ca.Semester = sem;
                     ca.AssessName = row["AssessName"].ToString();
                     ca.AssessType = int.Parse(row["AssessType"].ToString());
                     ca.Prop = int.Parse(row["Prop"].ToString());
@@ -137,7 +137,7 @@ namespace TeacherAssistant_DAL
             if (dt.Rows != null && dt.Rows.Count == 1)
             {
                 ca.CourseNo = cNo;
-                ca.Semster = sem;
+                ca.Semester = sem;
                 ca.AssessName = aName;
                 ca.AssessType = int.Parse(dt.Rows[0]["AssessType"].ToString());
                 ca.DefaultPoint = dt.Rows[0]["DefaultPoint"].ToString();

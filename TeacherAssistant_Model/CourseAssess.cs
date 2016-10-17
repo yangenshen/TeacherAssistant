@@ -9,7 +9,7 @@ namespace TeacherAssistant_Model
     public class CourseAssess
     {
         public string CourseNo { get; set; }
-        public string Semster { get; set; }
+        public string Semester { get; set; }
         public string AssessName { get; set; }
         public int AssessType { get; set; }
         public int ScoreType { get; set; }

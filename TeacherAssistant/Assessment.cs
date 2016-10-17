@@ -195,8 +195,8 @@ namespace TeacherAssistant
                 DefaultGrade.Show();
                 if (type == "1")
                 {
-                    DefaultGrade.Items.Add("P");
-                    DefaultGrade.Items.Add("F");
+
+                    DefaultGrade.Items.AddRange(GradeList.gradesPorF);
                     //show
                     PLabel.Show(); PTextBox.Text = ""; PTextBox.Show();
                     FLabel.Show(); FTextBox.Text = ""; FTextBox.Show();
@@ -213,8 +213,8 @@ namespace TeacherAssistant
                 }
                 else if (type == "3")
                 {
-                    string[] grades = { "A", "B", "C", "D", "F" };
-                    DefaultGrade.Items.AddRange(grades);
+                    
+                    DefaultGrade.Items.AddRange(GradeList.gradesFive);
                     //show
                     ALabel.Show(); ATextBox.Text = ""; ATextBox.Show();
                     BLabel.Show(); BTextBox.Text = ""; BTextBox.Show();
@@ -231,8 +231,8 @@ namespace TeacherAssistant
                 }
                 else if (type == "4")
                 {
-                    string[] grades = { "A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D", "F" };
-                    DefaultGrade.Items.AddRange(grades);
+                    
+                    DefaultGrade.Items.AddRange(GradeList.gradesTen);
                     //show
                     ALabel.Show(); ATextBox.Text = ""; ATextBox.Show();
                     BLabel.Show(); BTextBox.Text = ""; BTextBox.Show();
@@ -298,15 +298,26 @@ namespace TeacherAssistant
                         if (row.Index != e.RowIndex)
                             result += int.Parse(dataGridView1.Rows[row.Index].Cells[e.ColumnIndex].Value.ToString());
                     }
-                    if(result > 100)
+                    if (result > 100)
                     {
                         MessageBox.Show("比例超出限额" + (result - 100).ToString());
                         dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = resetProp;
                         return;
                     }
-                    //改变比例并重新计算平均分
-                    //TODO...
-
+                    //改变比例
+                    if (TeachManager.UpdateAssessProp(dataGridView1.Rows[e.RowIndex].Cells[0].Value.ToString(), int.Parse(value), UserInfo.CourseNo, UserInfo.Semester))
+                    {
+                        MessageBox.Show("调整比例成功！可在主页面重载得分");
+                        //重新计算学生综合得分
+                        ScoreManager.CalcuFinalScore(UserInfo.CourseNo, UserInfo.Semester);
+                        
+                    }
+                    else
+                    {
+                        MessageBox.Show("调整比例失败！请稍后重试");
+                        dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = resetProp;
+                        return;
+                    }
                 }
                 else
                 {

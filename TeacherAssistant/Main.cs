@@ -25,14 +25,15 @@ namespace TeacherAssistant
             dataGridView1.Rows.Clear();
             var listScore = ScoreManager.GetScores(UserInfo.CourseNo, UserInfo.Semester);
             //多少考核方式
-            //var details = listScore[0].AssessDetails;
-            //string[] detailCol = details.Split(';');
-            //int cols = detailCol.Length - 1;
-            //for(int i = 0; i < cols; i++)
-            //{
-                
-            //    int col = dataGridView1.Columns.Add();
-            //}
+            var details = listScore[0].AssessDetails;
+            string[] detailCol = details.Split(';');
+            int cols = detailCol.Length - 1;
+            for (int i = 0; i < cols; i++)
+            {
+                var assess = detailCol[i].Split(':');
+                //DataGridViewComboBoxColumn
+                //int col = dataGridView1.Columns.Add();
+            }
             //显示数据
             foreach (var score in listScore)
             {

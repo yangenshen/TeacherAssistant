@@ -58,5 +58,10 @@ namespace TeacherAssistant_BLL
             }
             return true;
         }
+
+        public static bool UpdateAssessProp(string aName, int aProp, string cNo, string sem)
+        {
+            return TeachService.UpdateAssessProp(aName, aProp, cNo, sem);
+        }
     }
 }

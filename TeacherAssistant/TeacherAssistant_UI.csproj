@@ -208,6 +208,7 @@
     <Content Include="App_Data\StuDB.accdb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="images\calculate.jpg" />
     <Content Include="images\import.jpg" />
     <None Include="images\setting.jpg" />
   </ItemGroup>

@@ -95,11 +95,12 @@
             this.Column4});
             this.dataGridView1.Location = new System.Drawing.Point(11, 31);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.ReadOnly = false;
             this.dataGridView1.RowHeadersVisible = false;
             this.dataGridView1.RowTemplate.Height = 27;
             this.dataGridView1.Size = new System.Drawing.Size(465, 187);
             this.dataGridView1.TabIndex = 1;
+            this.dataGridView1.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.dataGridView1_CellBeginEdit);
+            this.dataGridView1.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellEndEdit);
             // 
             // Column1
             // 
@@ -111,7 +112,6 @@
             // 
             this.Column2.HeaderText = "考核所占比例";
             this.Column2.Name = "Column2";
-            this.Column2.ReadOnly = false;
             // 
             // Column3
             // 
@@ -170,111 +170,111 @@
             // CmTextBox
             // 
             this.CmTextBox.Location = new System.Drawing.Point(392, 262);
+            this.CmTextBox.MaxLength = 2;
             this.CmTextBox.Multiline = true;
             this.CmTextBox.Name = "CmTextBox";
             this.CmTextBox.Size = new System.Drawing.Size(40, 20);
             this.CmTextBox.TabIndex = 30;
-            this.CmTextBox.MaxLength = 2;
             this.CmTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.NumberKeyPress);
             // 
             // CpTextBox
             // 
             this.CpTextBox.Location = new System.Drawing.Point(311, 262);
+            this.CpTextBox.MaxLength = 2;
             this.CpTextBox.Multiline = true;
             this.CpTextBox.Name = "CpTextBox";
             this.CpTextBox.Size = new System.Drawing.Size(40, 20);
             this.CpTextBox.TabIndex = 29;
-            this.CpTextBox.MaxLength = 2;
             this.CpTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.NumberKeyPress);
             // 
             // BmTextBox
             // 
             this.BmTextBox.Location = new System.Drawing.Point(230, 262);
+            this.BmTextBox.MaxLength = 2;
             this.BmTextBox.Multiline = true;
             this.BmTextBox.Name = "BmTextBox";
             this.BmTextBox.Size = new System.Drawing.Size(40, 20);
             this.BmTextBox.TabIndex = 28;
-            this.BmTextBox.MaxLength = 2;
             this.BmTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.NumberKeyPress);
             // 
             // BpTextBox
             // 
             this.BpTextBox.Location = new System.Drawing.Point(149, 262);
+            this.BpTextBox.MaxLength = 2;
             this.BpTextBox.Multiline = true;
             this.BpTextBox.Name = "BpTextBox";
             this.BpTextBox.Size = new System.Drawing.Size(40, 20);
             this.BpTextBox.TabIndex = 27;
-            this.BpTextBox.MaxLength = 2;
             this.BpTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.NumberKeyPress);
             // 
             // AmTextBox
             // 
             this.AmTextBox.Location = new System.Drawing.Point(56, 262);
+            this.AmTextBox.MaxLength = 2;
             this.AmTextBox.Multiline = true;
             this.AmTextBox.Name = "AmTextBox";
             this.AmTextBox.Size = new System.Drawing.Size(40, 20);
             this.AmTextBox.TabIndex = 26;
-            this.AmTextBox.MaxLength = 2;
             this.AmTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.NumberKeyPress);
             // 
             // PTextBox
             // 
             this.PTextBox.Location = new System.Drawing.Point(392, 194);
+            this.PTextBox.MaxLength = 3;
             this.PTextBox.Multiline = true;
             this.PTextBox.Name = "PTextBox";
             this.PTextBox.Size = new System.Drawing.Size(40, 20);
             this.PTextBox.TabIndex = 25;
-            this.PTextBox.MaxLength = 3;
             this.PTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.NumberKeyPress);
             // 
             // FTextBox
             // 
             this.FTextBox.Location = new System.Drawing.Point(392, 234);
+            this.FTextBox.MaxLength = 2;
             this.FTextBox.Multiline = true;
             this.FTextBox.Name = "FTextBox";
             this.FTextBox.Size = new System.Drawing.Size(40, 20);
             this.FTextBox.TabIndex = 24;
-            this.FTextBox.MaxLength = 2;
             this.FTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.NumberKeyPress);
             // 
             // DTextBox
             // 
             this.DTextBox.Location = new System.Drawing.Point(311, 234);
+            this.DTextBox.MaxLength = 2;
             this.DTextBox.Multiline = true;
             this.DTextBox.Name = "DTextBox";
             this.DTextBox.Size = new System.Drawing.Size(40, 20);
             this.DTextBox.TabIndex = 23;
-            this.DTextBox.MaxLength = 2;
             this.DTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.NumberKeyPress);
             // 
             // CTextBox
             // 
             this.CTextBox.Location = new System.Drawing.Point(230, 234);
+            this.CTextBox.MaxLength = 2;
             this.CTextBox.Multiline = true;
             this.CTextBox.Name = "CTextBox";
             this.CTextBox.Size = new System.Drawing.Size(40, 20);
             this.CTextBox.TabIndex = 22;
-            this.CTextBox.MaxLength = 2;
             this.CTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.NumberKeyPress);
             // 
             // BTextBox
             // 
             this.BTextBox.Location = new System.Drawing.Point(148, 234);
+            this.BTextBox.MaxLength = 2;
             this.BTextBox.Multiline = true;
             this.BTextBox.Name = "BTextBox";
             this.BTextBox.Size = new System.Drawing.Size(40, 20);
             this.BTextBox.TabIndex = 21;
-            this.BTextBox.MaxLength = 2;
             this.BTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.NumberKeyPress);
             // 
             // ATextBox
             // 
             this.ATextBox.Location = new System.Drawing.Point(56, 234);
+            this.ATextBox.MaxLength = 3;
             this.ATextBox.Multiline = true;
             this.ATextBox.Name = "ATextBox";
             this.ATextBox.Size = new System.Drawing.Size(40, 20);
             this.ATextBox.TabIndex = 20;
-            this.ATextBox.MaxLength = 3;
             this.ATextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.NumberKeyPress);
             // 
             // PLabel
@@ -397,10 +397,10 @@
             // DefaultPoint
             // 
             this.DefaultPoint.Location = new System.Drawing.Point(145, 184);
+            this.DefaultPoint.MaxLength = 3;
             this.DefaultPoint.Name = "DefaultPoint";
             this.DefaultPoint.Size = new System.Drawing.Size(71, 30);
             this.DefaultPoint.TabIndex = 5;
-            this.DefaultPoint.MaxLength = 3;
             this.DefaultPoint.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.NumberKeyPress);
             // 
             // DefaultGrade
@@ -499,10 +499,6 @@
 
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.TextBox DefaultPoint;
         private System.Windows.Forms.ComboBox DefaultGrade;
@@ -537,5 +533,9 @@
         private System.Windows.Forms.TextBox CTextBox;
         private System.Windows.Forms.TextBox BTextBox;
         private System.Windows.Forms.TextBox ATextBox;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
     }
 }

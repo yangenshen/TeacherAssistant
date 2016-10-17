@@ -94,16 +94,39 @@ namespace TeacherAssistant_DAL
             return listA;
         }
 
-        public static bool AddAssess(string aName, int aType, string point, string cNo, string sem, string pointDetails)
+        public static bool AddAssess(string aName, int aType, int sType, string point, string cNo, string sem, string pointDetails)
         {
-            string sql = string.Format("insert into CourseAssess(AssessName,AssessType,DefaultPoint,CourseNo,Semester,PointDetails) values('{0}',{1},'{2}','{3}','{4}','{5}')", aName, aType, point, cNo, sem, pointDetails);
+            string sql = string.Format("insert into CourseAssess(AssessName,AssessType,DefaultPoint,CourseNo,Semester,PointDetails,ScoreType) values('{0}',{1},'{2}','{3}','{4}','{5}',{6})", aName, aType, point, cNo, sem, pointDetails, sType);
             return DBHelper.ExecuteNonQuery(sql);
         }
 
-        public static bool UpdateAssessProp(string aName, float aProp, string cNo, string sem)
+        public static bool UpdateAssessProp(string aName, int aProp, string cNo, string sem)
         {
             string sql = string.Format("update CourseAssess set Prop = {0} where AssessName = '{1}' and CourseNo = '{2}' and Semster = '{3}'", aProp, aName, cNo, sem);
             return DBHelper.ExecuteNonQuery(sql);
+        }
+
+        public static List<CourseAssess> GetCoureseAssessments(string cNo, string sem)
+        {
+            string sql = string.Format("select * from CourseAssess where CourseNo = '{0}' and Semester = '{1}'", cNo, sem);
+            DataTable dt = DBHelper.GetDataTable(sql);
+            List<CourseAssess> listCA = new List<CourseAssess>();
+            if (dt.Rows != null && dt.Rows.Count != 0)
+            {
+                foreach (DataRow row in dt.Rows)
+                {
+                    CourseAssess ca = new CourseAssess();
+                    ca.CourseNo = cNo;
+                    ca.Semster = sem;
+                    ca.AssessName = row["AssessName"].ToString();
+                    ca.AssessType = int.Parse(row["AssessType"].ToString());
+                    ca.Prop = int.Parse(row["Prop"].ToString());
+                    ca.PointDetails = row["PointDetails"].ToString();
+                    ca.ScoreType = int.Parse(row["ScoreType"].ToString());
+                    listCA.Add(ca);
+                }
+            }
+            return listCA;
         }
 
         public static CourseAssess GetCourseAssessByName(string cNo, string sem, string aName)
@@ -113,7 +136,9 @@ namespace TeacherAssistant_DAL
             CourseAssess ca = new CourseAssess();
             if (dt.Rows != null && dt.Rows.Count == 1)
             {
-                ca.AssessName = dt.Rows[0]["AssessName"].ToString();
+                ca.CourseNo = cNo;
+                ca.Semster = sem;
+                ca.AssessName = aName;
                 ca.AssessType = int.Parse(dt.Rows[0]["AssessType"].ToString());
                 ca.DefaultPoint = dt.Rows[0]["DefaultPoint"].ToString();
                 ca.PointDetails = dt.Rows[0]["PointDetails"].ToString();

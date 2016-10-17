@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 using TeacherAssistant_BLL;
 using TeacherAssistant_Model;
@@ -7,12 +8,35 @@ namespace TeacherAssistant
 {
     public partial class Assessment : Form
     {
+
+        private string resetProp = string.Empty;    //改变比例时记录改变前数值
+
         public Assessment()
         {
             InitializeComponent();
             GetAssessments();
             GetScoreMethods();
+            DisplayAssessments();
             ScoreMethods_SelectedIndexChanged(ScoreMethods, new EventArgs());
+        }
+
+        private void DisplayAssessments()
+        {
+            List<CourseAssess> listCA = TeachManager.GetCoureseAssessments(UserInfo.CourseNo, UserInfo.Semester);
+            foreach (var ca in listCA)
+            {
+                int index = dataGridView1.Rows.Add();
+                dataGridView1.Rows[index].Cells[0].Value = ca.AssessName;
+                dataGridView1.Rows[index].Cells[1].Value = ca.Prop;
+                dataGridView1.Rows[index].Cells[2].Value = (AssessType)ca.AssessType;
+                //计算平均值
+                dataGridView1.Rows[index].Cells[3].Value = ScoreManager.CalcuAssessAverage(ca);
+            }
+        }
+
+        private DataGridViewCell AddChangePropButton()
+        {
+            throw new NotImplementedException();
         }
 
         private void GetScoreMethods()
@@ -53,20 +77,21 @@ namespace TeacherAssistant
                         defalutPoint = DefaultGrade.SelectedItem.ToString();
                         if (type == "1")
                         {
-                            pointDetails += "P:" + PTextBox.Text + ";F:" + FTextBox.Text;
+                            pointDetails += "P:" + PTextBox.Text + ";F:" + FTextBox.Text + ";";
                         }
                         else if (type == "3")
                         {
-                            pointDetails += "A:" + ATextBox.Text + ";B:" + BTextBox.Text + ";C:" + CTextBox.Text + ";D:" + DTextBox.Text + ";F:" + FTextBox.Text;
+                            pointDetails += "A:" + ATextBox.Text + ";B:" + BTextBox.Text + ";C:" + CTextBox.Text + ";D:" + DTextBox.Text + ";F:" + FTextBox.Text + ";";
                         }
                         else if (type == "4")
                         {
                             pointDetails += "A:" + ATextBox.Text + ";A-:" + AmTextBox.Text + ";B+:" + BpTextBox.Text + ";B:" + BTextBox.Text +
                                             ";B-:" + BmTextBox.Text + "C+:" + CpTextBox.Text + ";C:" + CTextBox.Text + ";C-:" + CmTextBox.Text +
-                                            ";D:" + DTextBox.Text + ";F:" + FTextBox.Text;
+                                            ";D:" + DTextBox.Text + ";F:" + FTextBox.Text + ";";
                         }
                     }
-                    TeachManager.AddAssess(aName, aType, defalutPoint, UserInfo.CourseNo, UserInfo.Semester, pointDetails);
+                    int sType = int.Parse(type);
+                    TeachManager.AddAssess(aName, aType, sType, defalutPoint, UserInfo.CourseNo, UserInfo.Semester, pointDetails);
                     ScoreManager.AddAssessForStu(UserInfo.CourseNo, UserInfo.Semester, aName, defalutPoint);
                     int index = dataGridView1.Rows.Add();
                     dataGridView1.Rows[index].Cells[0].Value = aName;
@@ -90,6 +115,11 @@ namespace TeacherAssistant
             if (AssessName.Text == "")
             {
                 MessageBox.Show("考核名称不可为空");
+                return false;
+            }
+            if (AssessName.Text.ToString().IndexOf('#') != -1)
+            {
+                MessageBox.Show("考核名称不能包含保留字符‘#’");
                 return false;
             }
             //判断默认得分和各个等级对应得分
@@ -253,6 +283,44 @@ namespace TeacherAssistant
                 MessageBox.Show("请输入数字！");
                 e.Handled = true;
             }
+        }
+
+        private void dataGridView1_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.ColumnIndex == 1)
+            {
+                var value = dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
+                int result = 0;
+                if (int.TryParse(value, out result))
+                {
+                    foreach (DataGridViewRow row in dataGridView1.Rows)
+                    {
+                        if (row.Index != e.RowIndex)
+                            result += int.Parse(dataGridView1.Rows[row.Index].Cells[e.ColumnIndex].Value.ToString());
+                    }
+                    if(result > 100)
+                    {
+                        MessageBox.Show("比例超出限额" + (result - 100).ToString());
+                        dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = resetProp;
+                        return;
+                    }
+                    //改变比例并重新计算平均分
+                    //TODO...
+
+                }
+                else
+                {
+                    MessageBox.Show("只能输入整数数字");
+                    dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = resetProp;
+                    return;
+                }
+
+            }
+        }
+
+        private void dataGridView1_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
+        {
+            resetProp = dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
         }
     }
 }

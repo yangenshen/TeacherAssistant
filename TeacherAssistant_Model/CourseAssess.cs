@@ -12,7 +12,8 @@ namespace TeacherAssistant_Model
         public string Semster { get; set; }
         public string AssessName { get; set; }
         public int AssessType { get; set; }
-        public float Prop { get; set; }
+        public int ScoreType { get; set; }
+        public int Prop { get; set; }
         public string DefaultPoint { get; set; }
         public string PointDetails { get; set; }
     }

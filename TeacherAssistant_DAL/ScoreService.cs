@@ -24,9 +24,9 @@ namespace TeacherAssistant_DAL
                     score.Semester = sem;
                     score.Auto = (bool)row["Auto"];
                     var impressPoints = row["ImpressPoints"].ToString();
-                    score.ImpressPoints = impressPoints == "" ? 0 : float.Parse(impressPoints);
+                    score.ImpressPoints = impressPoints == "" ? 0 : double.Parse(impressPoints);
                     var finalScore = row["FinalScore"].ToString();
-                    score.FinalScore = finalScore == "" ? 0 : float.Parse(finalScore);
+                    score.FinalScore = finalScore == "" ? 0 : double.Parse(finalScore);
                     score.StuNo = row["StuNo"].ToString();
                     score.Grade = row["Grade"].ToString();
                     score.AssessDetails = row["AssessDetails"].ToString();
@@ -48,9 +48,9 @@ namespace TeacherAssistant_DAL
                 score.Semester = sem;
                 score.Auto = (bool)(dt.Rows[0]["Auto"]);
                 var impressPoints = dt.Rows[0]["ImpressPoints"].ToString();
-                score.ImpressPoints = impressPoints == "" ? 0 : float.Parse(impressPoints);
+                score.ImpressPoints = impressPoints == "" ? 0 : double.Parse(impressPoints);
                 var finalScore = dt.Rows[0]["FinalScore"].ToString();
-                score.FinalScore = finalScore == "" ? 0 : float.Parse(finalScore);
+                score.FinalScore = finalScore == "" ? 0 : double.Parse(finalScore);
                 score.StuNo = sNo;
                 score.AssessDetails = dt.Rows[0]["AssessDetails"].ToString();
                 score.Grade = dt.Rows[0]["Grade"].ToString();

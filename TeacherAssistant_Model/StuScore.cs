@@ -14,8 +14,8 @@ namespace TeacherAssistant_Model
         public string StuName { get; set; }
         public string CourseNo { get; set; }
         public string Semester { get; set; }
-        public float ImpressPoints { get; set; }
-        public float FinalScore { get; set; }
+        public double ImpressPoints { get; set; }
+        public double FinalScore { get; set; }
         public string Grade { get; set; }
         public string AssessDetails { get; set; }
     }

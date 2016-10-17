@@ -30,9 +30,9 @@ namespace TeacherAssistant_BLL
             return TeachService.GetAssessments();
         }
 
-        public static bool AddAssess(string aName, int aType, string point, string cNo, string sem, string pointDetails)
+        public static bool AddAssess(string aName, int aType, int sType, string point, string cNo, string sem, string pointDetails)
         {
-            return TeachService.AddAssess(aName, aType, point, cNo, sem, pointDetails);
+            return TeachService.AddAssess(aName, aType,sType, point, cNo, sem, pointDetails);
         }
 
         public static List<ScoreMethod> GetScoreMethods()
@@ -43,6 +43,11 @@ namespace TeacherAssistant_BLL
         public CourseAssess GetCourseAssessByName(string cNo, string sem, string aName)
         {
             return TeachService.GetCourseAssessByName(cNo, sem, aName);
+        }
+
+        public static List<CourseAssess> GetCoureseAssessments(string cNo, string sem)
+        {
+            return TeachService.GetCoureseAssessments(cNo, sem);
         }
 
         public static bool ExistAssess(string cNo, string sem, string aName)

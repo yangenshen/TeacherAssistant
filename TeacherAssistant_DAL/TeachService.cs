@@ -142,6 +142,7 @@ namespace TeacherAssistant_DAL
                 ca.AssessType = int.Parse(dt.Rows[0]["AssessType"].ToString());
                 ca.DefaultPoint = dt.Rows[0]["DefaultPoint"].ToString();
                 ca.PointDetails = dt.Rows[0]["PointDetails"].ToString();
+                ca.ScoreType = int.Parse(dt.Rows[0]["ScoreType"].ToString());
             }
             return ca;
         }

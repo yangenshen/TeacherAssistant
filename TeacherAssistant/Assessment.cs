@@ -289,7 +289,9 @@ namespace TeacherAssistant
         {
             if (e.ColumnIndex == 1)
             {
-                var value = dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
+                var value = dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value?.ToString();
+                if (value == resetProp)
+                    return;
                 int result = 0;
                 if (int.TryParse(value, out result))
                 {

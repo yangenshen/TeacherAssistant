@@ -40,8 +40,9 @@ namespace TeacherAssistant_BLL
             return TeachService.GetScoreMethods();
         }
 
-        public CourseAssess GetCourseAssessByName(string cNo, string sem, string aName)
+        public static CourseAssess GetCourseAssessByName(string cNo, string sem, string aName)
         {
+            aName = aName.Substring(1, aName.Length - 1);
             return TeachService.GetCourseAssessByName(cNo, sem, aName);
         }
 

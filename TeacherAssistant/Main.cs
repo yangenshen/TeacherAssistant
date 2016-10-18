@@ -19,31 +19,73 @@ namespace TeacherAssistant
             ShowDataGridView();
         }
 
+        private void AddAssessColumn(string text, int sType)
+        {
+            if (sType == (int)ScoreType.Percentage)
+            {
+                DataGridViewTextBoxColumn textColumnn = new DataGridViewTextBoxColumn();
+                textColumnn.ReadOnly = false;
+                dataGridView1.Columns.Add(textColumnn);
+            }
+            else
+            {
+                DataGridViewComboBoxColumn comoboColumn = new DataGridViewComboBoxColumn();
+                comoboColumn.ReadOnly = false;
+                comoboColumn.HeaderText = text;
+                if (sType == (int)ScoreType.PorF)
+                    comoboColumn.Items.AddRange(GradeList.gradesPorF);
+                else if (sType == (int)ScoreType.FiveLevel)
+                    comoboColumn.Items.AddRange(GradeList.gradesFive);
+                else if (sType == (int)ScoreType.TenLevel)
+                    comoboColumn.Items.AddRange(GradeList.gradesTen);
+                comoboColumn.DefaultCellStyle.BackColor = System.Drawing.Color.White;
+                comoboColumn.FlatStyle = FlatStyle.Flat;
+                //事件
+                //http://blog.csdn.net/hejialin666/article/details/5036871
+                ////每次注册事件的时候先移除事件，避免不断被递归调用
+                dataGridView1.Columns.Add(comoboColumn);
+            }
+        }
+
         private void ShowDataGridView()
         {
-            ///显示具体得分情况
+            //重载之前消除一切
             dataGridView1.Rows.Clear();
+            var end = dataGridView1.Columns.Count;
+            //从后向前
+            for (int i = end - 1; i > 5; i--)
+                dataGridView1.Columns.Remove(dataGridView1.Columns[i]);
+
+            //显示具体得分情况
             var listScore = ScoreManager.GetScores(UserInfo.CourseNo, UserInfo.Semester);
-            //多少考核方式
-            var details = listScore[0].AssessDetails;
-            string[] detailCol = details.Split(';');
-            int cols = detailCol.Length - 1;
-            for (int i = 0; i < cols; i++)
+            if (listScore.Count != 0)
             {
-                var assess = detailCol[i].Split(':');
-                //DataGridViewComboBoxColumn
-                //int col = dataGridView1.Columns.Add();
-            }
-            //显示数据
-            foreach (var score in listScore)
-            {
-                int index = dataGridView1.Rows.Add();
-                dataGridView1.Rows[index].Cells[0].Value = index;
-                dataGridView1.Rows[index].Cells[1].Value = score.Auto == true ? "自动" : "手动";
-                dataGridView1.Rows[index].Cells[2].Value = score.StuNo;
-                dataGridView1.Rows[index].Cells[3].Value = score.StuName;
-                dataGridView1.Rows[index].Cells[4].Value = score.FinalScore;
-                dataGridView1.Rows[index].Cells[5].Value = score.Grade;
+                //多少考核方式
+                var detailString = listScore[0].AssessDetails;
+                string[] details = detailString.Split(';');
+                //减去最后一个空的
+                int colCount = details.Length - 1;
+                for (int i = 0; i < colCount; i++)
+                {
+                    //assess[0]就是名称
+                    var dUnit = details[i].Split(':');
+                    //根据名称获取考核项
+                    var assess = TeachManager.GetCourseAssessByName(UserInfo.CourseNo, UserInfo.Semester, dUnit[0]);
+                    AddAssessColumn(dUnit[0].Substring(1, dUnit[0].Length - 1), assess.ScoreType);
+                }
+
+
+                //显示数据
+                foreach (var score in listScore)
+                {
+                    int index = dataGridView1.Rows.Add();
+                    dataGridView1.Rows[index].Cells[0].Value = index;
+                    dataGridView1.Rows[index].Cells[1].Value = score.Auto == true ? "自动" : "手动";
+                    dataGridView1.Rows[index].Cells[2].Value = score.StuNo;
+                    dataGridView1.Rows[index].Cells[3].Value = score.StuName;
+                    dataGridView1.Rows[index].Cells[4].Value = score.FinalScore;
+                    dataGridView1.Rows[index].Cells[5].Value = score.Grade;
+                }
             }
         }
 
@@ -169,6 +211,11 @@ FileAccess.Read, FileShare.ReadWrite))
         private void ReloadButton_Click(object sender, EventArgs e)
         {
             ShowDataGridView();
+        }
+
+        private void dataGridView1_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        {
+            
         }
     }
 }

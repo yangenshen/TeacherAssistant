@@ -311,7 +311,7 @@ namespace TeacherAssistant
                     {
                         MessageBox.Show("调整比例成功！可在主页面重载得分");
                         //重新计算学生综合得分
-                        ScoreManager.CalcuFinalScore(UserInfo.CourseNo, UserInfo.Semester);
+                        ScoreManager.CalcuAllFinalScore(UserInfo.CourseNo, UserInfo.Semester);
                         
                     }
                     else

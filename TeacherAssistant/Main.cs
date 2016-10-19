@@ -25,6 +25,7 @@ namespace TeacherAssistant
             {
                 DataGridViewTextBoxColumn textColumnn = new DataGridViewTextBoxColumn();
                 textColumnn.ReadOnly = false;
+                textColumnn.HeaderText = text;
                 dataGridView1.Columns.Add(textColumnn);
             }
             else
@@ -40,9 +41,7 @@ namespace TeacherAssistant
                     comoboColumn.Items.AddRange(GradeList.gradesTen);
                 comoboColumn.DefaultCellStyle.BackColor = System.Drawing.Color.White;
                 comoboColumn.FlatStyle = FlatStyle.Flat;
-                //事件
-                //http://blog.csdn.net/hejialin666/article/details/5036871
-                ////每次注册事件的时候先移除事件，避免不断被递归调用
+
                 dataGridView1.Columns.Add(comoboColumn);
             }
         }
@@ -67,7 +66,7 @@ namespace TeacherAssistant
                 int colCount = details.Length - 1;
                 for (int i = 0; i < colCount; i++)
                 {
-                    //assess[0]就是名称
+                    //dUnit[0]就是名称
                     var dUnit = details[i].Split(':');
                     //根据名称获取考核项
                     var assess = TeachManager.GetCourseAssessByName(UserInfo.CourseNo, UserInfo.Semester, dUnit[0]);
@@ -85,6 +84,15 @@ namespace TeacherAssistant
                     dataGridView1.Rows[index].Cells[3].Value = score.StuName;
                     dataGridView1.Rows[index].Cells[4].Value = score.FinalScore;
                     dataGridView1.Rows[index].Cells[5].Value = score.Grade;
+
+                    detailString = score.AssessDetails;
+                    details = detailString.Split(';');
+                    for (int i = 0; i < colCount; i++)
+                    {
+                        //dUnit[1]就是得分
+                        var dUnit = details[i].Split(':');
+                        dataGridView1.Rows[index].Cells[6 + i].Value = dUnit[1];
+                    }
                 }
             }
         }
@@ -215,7 +223,15 @@ FileAccess.Read, FileShare.ReadWrite))
 
         private void dataGridView1_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
-            
+            var value = dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
+            if (value != null)
+            {
+                string point = value.ToString();
+                string sNo = dataGridView1.Rows[e.RowIndex].Cells[2].Value.ToString();
+                string aName = dataGridView1.Columns[e.ColumnIndex].HeaderText;
+                dataGridView1.Rows[e.RowIndex].Cells[4].Value = ScoreManager.UpdateAssessScoreForStu(UserInfo.CourseNo, UserInfo.Semester, sNo, aName, point);
+
+            }
         }
     }
 }

@@ -38,6 +38,24 @@ namespace TeacherAssistant_BLL
             return true;
         }
 
+        public static double UpdateAssessScoreForStu(string cNo, string sem, string sNo, string aName, string point)
+        {
+            var ss = GetStuScore(cNo, sNo, sem);
+            var details = ss.AssessDetails;
+            var oldaName = "#" + aName;
+            var newaName = string.Format("#{0}:{1}", aName, point);
+            int index1 = details.IndexOf(oldaName);
+            for (int i = index1 + aName.Length + 1; details[i] != ';'; i++)
+                oldaName += ss.AssessDetails[i];
+            details = details.Replace(oldaName, newaName);
+            //更新details
+            ScoreService.UpdateAssessDetailForStu(sNo, cNo, sem, details);
+            //重新计算FinalScore
+            //不必重新获取StuScore,改变一下原有的detail就行
+            ss.AssessDetails = details;
+            return CalcuFinalScore(cNo, sem, ss);
+        }
+
         public static StuScore GetStuScore(string cNo, string sNo, string sem)
         {
             return ScoreService.GetStuCourseScore(cNo, sNo, sem);
@@ -51,6 +69,31 @@ namespace TeacherAssistant_BLL
                 return ScoreService.ImportStuScore(sNo, cNo, sem);
             }
             return true;
+        }
+
+
+        public static double CalcuAssessAverage(CourseAssess ca)
+        {
+            var listSS = ScoreService.GetScores(ca.CourseNo, ca.Semester);
+
+            double final = 0.0;
+            int stuCount = listSS.Count;
+            foreach (var ss in listSS)
+            {
+                final += GetPoint(ca, ss);
+            }
+            return final / stuCount;
+        }
+
+        public static void CalcuAllFinalScore(string cNo, string sem)
+        {
+            //获取所有StuScore
+            var listSS = ScoreService.GetScores(cNo, sem);
+            
+            foreach (var ss in listSS)
+            {
+                CalcuFinalScore(cNo, sem, ss);
+            }
         }
 
         private static double GetPoint(CourseAssess ca, StuScore ss)
@@ -82,36 +125,19 @@ namespace TeacherAssistant_BLL
             }
         }
 
-        public static double CalcuAssessAverage(CourseAssess ca)
-        {
-            var listSS = ScoreService.GetScores(ca.CourseNo, ca.Semester);
-
-            double final = 0.0;
-            int stuCount = listSS.Count;
-            foreach (var ss in listSS)
-            {
-                final += GetPoint(ca, ss);
-            }
-            return final / stuCount;
-        }
-
-        public static void CalcuFinalScore(string cNo, string sem)
+        public static double CalcuFinalScore(string cNo, string sem, StuScore ss)
         {
             //获取所有CourseAssess
             var listCA = TeachService.GetCoureseAssessments(cNo, sem);
-            //获取所有StuScore
-            var listSS = ScoreService.GetScores(cNo, sem);
-            //对于每一个StuScore,将所有ScoreAssess换成point，再乘以prop
-            foreach (var ss in listSS)
+            double finalScore = 0.0;
+            //将所有CourseAssess换成point，再乘以prop
+            foreach (var ca in listCA)
             {
-                double finalScore = 0.0;
-                foreach (var ca in listCA)
-                {
-                    finalScore += (double)ca.Prop / 100 * GetPoint(ca, ss);
-                }
-                //更新数据库
-                ScoreService.UpdateFinalScoreForStu(ss.StuNo, cNo, sem, finalScore);
+                finalScore += (double)ca.Prop / 100 * GetPoint(ca, ss);
             }
+            //更新数据库
+            ScoreService.UpdateFinalScoreForStu(ss.StuNo, cNo, sem, finalScore);
+            return finalScore;
         }
     }
 }

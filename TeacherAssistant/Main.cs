@@ -1,5 +1,6 @@
 ﻿using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
+using NPOI.Util.Collections;
 using System;
 using System.ComponentModel;
 using System.IO;
@@ -12,6 +13,8 @@ namespace TeacherAssistant
 {
     public partial class Main : Form
     {
+        private static HashSet<int> Manual;//手动修改成绩的index编号集
+
         public Main()
         {
             InitializeComponent();
@@ -112,15 +115,19 @@ namespace TeacherAssistant
             RuleLabel.Text = t.RuleNo.ToString();
             TeacherNameLable.Text = UserInfo.TeacherName;
             ExamTimeLabel.Text = e.ExamTime.ToString();
+            UserInfo.Type = c.Type;
             switch (c.Type)
             {
                 case CourseType.本科课程:
                     GradeLabel.Text = "十分制";
+                    ((DataGridViewComboBoxColumn)dataGridView1.Columns[5]).Items.AddRange(GradeList.gradesTen);
                     break;
                 case CourseType.MBA课程:
                     GradeLabel.Text = "五分制";
+                    ((DataGridViewComboBoxColumn)dataGridView1.Columns[5]).Items.AddRange(GradeList.gradesFive);
                     break;
                 case CourseType.研究生课程:
+                    ((DataGridViewComboBoxColumn)dataGridView1.Columns[5]).Items.AddRange(GradeList.gradesFive);
                     GradeLabel.Text = "五分制";
                     break;
                 default:
@@ -223,15 +230,29 @@ FileAccess.Read, FileShare.ReadWrite))
 
         private void dataGridView1_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
-            var value = dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
-            if (value != null)
+            if (e.ColumnIndex != 5)//修改考核得分
             {
-                string point = value.ToString();
-                string sNo = dataGridView1.Rows[e.RowIndex].Cells[2].Value.ToString();
-                string aName = dataGridView1.Columns[e.ColumnIndex].HeaderText;
-                dataGridView1.Rows[e.RowIndex].Cells[4].Value = ScoreManager.UpdateAssessScoreForStu(UserInfo.CourseNo, UserInfo.Semester, sNo, aName, point);
+                var value = dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
+                if (value != null)
+                {
+                    string point = value.ToString();
+                    string sNo = dataGridView1.Rows[e.RowIndex].Cells[2].Value.ToString();
+                    string aName = dataGridView1.Columns[e.ColumnIndex].HeaderText;
+                    dataGridView1.Rows[e.RowIndex].Cells[4].Value = ScoreManager.UpdateAssessScoreForStu(UserInfo.CourseNo, UserInfo.Semester, sNo, aName, point);
 
+                }
             }
+            else//修改成绩
+            {
+                //DO Nothing Now...
+                Manual.Add(e.RowIndex);
+            }
+        }
+
+        private void toolStripButton4_Click(object sender, EventArgs e)
+        {
+            Rule rule = new Rule();
+            rule.ShowDialog();
         }
     }
 }

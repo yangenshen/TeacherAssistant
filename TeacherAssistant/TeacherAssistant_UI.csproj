@@ -149,6 +149,12 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Rule.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Rule.Designer.cs">
+      <DependentUpon>Rule.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Assessment.resx">
       <DependentUpon>Assessment.cs</DependentUpon>
     </EmbeddedResource>
@@ -174,6 +180,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="Rule.resx">
+      <DependentUpon>Rule.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -209,6 +218,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="images\calculate.jpg" />
+    <None Include="images\Ferrari.jpg" />
     <Content Include="images\import.jpg" />
     <None Include="images\setting.jpg" />
   </ItemGroup>

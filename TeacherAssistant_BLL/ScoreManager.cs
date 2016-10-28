@@ -82,14 +82,15 @@ namespace TeacherAssistant_BLL
             {
                 final += GetPoint(ca, ss);
             }
-            return final / stuCount;
+            //保留两位小数
+            return Math.Round(final / stuCount, 2);
         }
 
         public static void CalcuAllFinalScore(string cNo, string sem)
         {
             //获取所有StuScore
             var listSS = ScoreService.GetScores(cNo, sem);
-            
+
             foreach (var ss in listSS)
             {
                 CalcuFinalScore(cNo, sem, ss);

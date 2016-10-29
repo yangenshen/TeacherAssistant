@@ -62,6 +62,7 @@ namespace TeacherAssistant
             var listScore = ScoreManager.GetScores(UserInfo.CourseNo, UserInfo.Semester);
             if (listScore.Count != 0)
             {
+                UserInfo.NumOfStu = listScore.Count;
                 //多少考核方式
                 var detailString = listScore[0].AssessDetails;
                 string[] details = detailString.Split(';');
@@ -251,7 +252,12 @@ FileAccess.Read, FileShare.ReadWrite))
 
         private void toolStripButton4_Click(object sender, EventArgs e)
         {
-            Rule rule = new Rule();
+            if (UserInfo.NumOfStu == 0)
+            {
+                MessageBox.Show("尚未导入学生数据");
+                return;
+            }
+            CourseRule rule = new CourseRule();
             rule.ShowDialog();
         }
     }

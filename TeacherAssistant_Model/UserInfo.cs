@@ -14,5 +14,6 @@ namespace TeacherAssistant_Model
         public static string Semester { get; set; }
         public static string CourseNo { get; set; }
         public static string CourseName { get; set; }
+        public static int NumOfStu { get; set; }
     }
 }

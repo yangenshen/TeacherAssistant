@@ -87,6 +87,7 @@
     <Compile Include="Course.cs" />
     <Compile Include="CourseAssess.cs" />
     <Compile Include="Exam.cs" />
+    <Compile Include="Rule.cs" />
     <Compile Include="ScoreMethod.cs" />
     <Compile Include="Stu.cs" />
     <Compile Include="StuScore.cs" />

@@ -26,6 +26,7 @@ namespace TeacherAssistant_DAL
             {
                 rule.CourseNo = cNo;
                 rule.Semester = sem;
+                rule.Description = dt.Rows[0]["Description"].ToString();
                 rule.NumDetails = dt.Rows[0]["NumDetails"].ToString();
                 rule.PointDetails = dt.Rows[0]["PointDetails"].ToString();
                 rule.RuleNo = int.Parse(dt.Rows[0]["RuleNo"].ToString());
@@ -35,5 +36,28 @@ namespace TeacherAssistant_DAL
             return rule;
         }
 
+        public static bool UpdateRuleNumDetails(string cNo, string sem, string numDetails)
+        {
+            string sql = string.Format("Update Rule set NumDetails = '{0}' where CourseNo = '{1}' and Semester = '{2}'", numDetails, cNo, sem);
+            return DBHelper.ExecuteNonQuery(sql);
+        }
+
+        public static bool UpdateRulePointDetails(string cNo, string sem, string pointDetails)
+        {
+            string sql = string.Format("Update Rule set PointDetails = '{0}' where CourseNo = '{1}' and Semester = '{2}'", pointDetails, cNo, sem);
+            return DBHelper.ExecuteNonQuery(sql);
+        }
+
+        public static bool UpdateRuleVersion(string cNo, string sem, int v)
+        {
+            string sql = string.Format("Update Rule set Version = {0} where CourseNo = '{1}' and Semester = '{2}'", v, cNo, sem);
+            return DBHelper.ExecuteNonQuery(sql);
+        }
+
+        public static bool UpdateRuleType(string cNo, string sem, int t)
+        {
+            string sql = string.Format("Update Rule set RuleType = {0} where CourseNo = '{1}' and Semester = '{2}'", t, cNo, sem);
+            return DBHelper.ExecuteNonQuery(sql);
+        }
     }
 }

@@ -10,7 +10,7 @@ namespace TeacherAssistant_Model
     {
         public static string TeacherNo { get; set; }
         public static string TeacherName { get; set; }
-        public static CourseType Type { get; set; }
+        public static int Type { get; set; }            //成绩分等级数
         public static string Semester { get; set; }
         public static string CourseNo { get; set; }
         public static string CourseName { get; set; }

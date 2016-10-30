@@ -2,6 +2,7 @@
 using NPOI.SS.UserModel;
 using NPOI.Util.Collections;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace TeacherAssistant
 {
     public partial class Main : Form
     {
-        private static HashSet<int> Manual;//手动修改成绩的index编号集
+        private HashSet<int> Manual = new HashSet<int>();//手动修改成绩的index编号集
 
         public Main()
         {
@@ -116,18 +117,20 @@ namespace TeacherAssistant
             RuleLabel.Text = t.RuleNo.ToString();
             TeacherNameLable.Text = UserInfo.TeacherName;
             ExamTimeLabel.Text = e.ExamTime.ToString();
-            UserInfo.Type = c.Type;
             switch (c.Type)
             {
                 case CourseType.本科课程:
                     GradeLabel.Text = "十分制";
+                    UserInfo.Type = 10;
                     ((DataGridViewComboBoxColumn)dataGridView1.Columns[5]).Items.AddRange(GradeList.gradesTen);
                     break;
                 case CourseType.MBA课程:
+                    UserInfo.Type = 5;
                     GradeLabel.Text = "五分制";
                     ((DataGridViewComboBoxColumn)dataGridView1.Columns[5]).Items.AddRange(GradeList.gradesFive);
                     break;
                 case CourseType.研究生课程:
+                    UserInfo.Type = 5;
                     ((DataGridViewComboBoxColumn)dataGridView1.Columns[5]).Items.AddRange(GradeList.gradesFive);
                     GradeLabel.Text = "五分制";
                     break;
@@ -259,6 +262,57 @@ FileAccess.Read, FileShare.ReadWrite))
             }
             CourseRule rule = new CourseRule();
             rule.ShowDialog();
+        }
+
+        private void AutoGradeLabel_Click(object sender, EventArgs e)
+        {
+            //先判断有没有规则
+            if (!RuleManager.ExistRule(UserInfo.CourseNo, UserInfo.Semester))
+            {
+                MessageBox.Show("尚未存在规则");
+            }
+            else
+            {
+                Rule rule = RuleManager.GetRule(UserInfo.CourseNo, UserInfo.Semester);
+                if (rule.RuleType == 1)//按照人数
+                {
+                    string[] nums = rule.NumDetails.Split(';');
+                    List<int> amounts = new List<int>();
+                    //记录各个等级人数
+                    for (int i = 0; i < UserInfo.Type; i++)
+                    {
+                        int n = int.Parse(nums[i].Split(':')[1]);
+                        amounts.Add(n);
+                    }
+                    //按照综合得分将每一个等级学生取出并赋予相应成绩
+                    //...
+                    //END
+
+                    //重载得分
+                    //...
+                    //END
+                }
+                else    //按照得分
+                {
+                    string[] details = rule.PointDetails.Split(';');
+                    List<int> points = new List<int>();
+                    for (int i = 0; i < UserInfo.Type; i++)
+                    {
+                        int p = int.Parse(details[i].Split(':')[1]);
+                        points.Add(p);
+                    }
+                    //按照得分段将每一个等级学生取出并赋予相应成绩
+                    //...
+                    //END
+
+                    //重载得分
+                    //...
+                    //END
+                }
+
+                //清除修改记录
+                Manual.Clear();
+            }
         }
     }
 }

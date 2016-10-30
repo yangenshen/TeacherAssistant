@@ -30,18 +30,13 @@ namespace TeacherAssistant
             }
             Rule rule = RuleManager.GetRule(UserInfo.CourseNo, UserInfo.Semester);
             #region 判断成绩等级制
-            switch (UserInfo.Type)
+            GradeLevels = UserInfo.Type;
+            switch (GradeLevels)
             {
-                case CourseType.本科课程:
-                    GradeLevels = 10;
+                case 10:
                     GradeLabel.Text = "十分制";
                     break;
-                case CourseType.MBA课程:
-                    GradeLevels = 5;
-                    GradeLabel.Text = "五分制";
-                    break;
-                case CourseType.研究生课程:
-                    GradeLevels = 5;
+                case 5:
                     GradeLabel.Text = "五分制";
                     break;
                 default:

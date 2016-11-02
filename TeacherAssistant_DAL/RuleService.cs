@@ -59,5 +59,38 @@ namespace TeacherAssistant_DAL
             string sql = string.Format("Update Rule set RuleType = {0} where CourseNo = '{1}' and Semester = '{2}'", t, cNo, sem);
             return DBHelper.ExecuteNonQuery(sql);
         }
+
+        public static List<string> GetSNoBySocreDesc(string cNo, string sem)
+        {
+            string sql = string.Format("select StuNo from StuScore ordey by FinalScore desc where CourseNo = '{0}' and Semester = '{1}'", cNo, sem);
+            List<string> listSNo = new List<string>();
+            DataTable dt = DBHelper.GetDataTable(sql);
+            if (dt != null && dt.Rows.Count != 0)
+            {
+                foreach (DataRow row in dt.Rows)
+                    listSNo.Add(row[0].ToString());
+            }
+            return listSNo;
+        }
+
+        public static List<string> GetSNoByScoreLimit(string cNo, string sem, int plow, int phigh)
+        {
+            string sql = string.Format("select StuNo from StuScore where FinalScore >= {0} and FinalScore < {1} and  CourseNo = '{2}' and Semester = '{3}'", plow, phigh, cNo, sem);
+            List<string> listSNo = new List<string>();
+            DataTable dt = DBHelper.GetDataTable(sql);
+            if (dt != null && dt.Rows.Count != 0)
+            {
+                foreach (DataRow row in dt.Rows)
+                    listSNo.Add(row[0].ToString());
+            }
+            return listSNo;
+        }
+
+        public static bool UpdateGrade(string cNo, string sem,string sNo,string grade)
+        {
+            string sql = string.Format("update StuScore set Grade = '{0}' where StuNo = '{1}' and CourseNo = '{2}' and Semester = '{3}'", grade, sNo, cNo, sem);
+            return DBHelper.ExecuteNonQuery(sql);
+        }
+
     }
 }

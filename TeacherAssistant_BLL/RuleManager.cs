@@ -43,5 +43,21 @@ namespace TeacherAssistant_BLL
                     return false;
             }
         }
+
+        public static List<string> GetSNoByScoreDesc(string sem,string cNo)
+        {
+            return RuleService.GetSNoBySocreDesc(cNo, sem);
+        }
+
+        public static List<string> GetSNoByScoreLimit(string cNo, string sem, int plow, int phigh)
+        {
+            return RuleService.GetSNoByScoreLimit(cNo, sem, plow, phigh);
+        }
+
+        public static bool UpdateGrade(string cNo, string sem, string sNo, string grade)
+        {
+            return RuleService.UpdateGrade(cNo, sem, sNo, grade);
+        }
+
     }
 }

@@ -1,6 +1,5 @@
 ﻿using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
-using NPOI.Util.Collections;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -273,6 +272,12 @@ FileAccess.Read, FileShare.ReadWrite))
             }
             else
             {
+                //对应等级
+                string[] gradeList;
+                if (UserInfo.Type == 5)
+                    gradeList = GradeList.gradesFive;
+                else
+                    gradeList = GradeList.gradesTen;
                 Rule rule = RuleManager.GetRule(UserInfo.CourseNo, UserInfo.Semester);
                 if (rule.RuleType == 1)//按照人数
                 {
@@ -284,12 +289,25 @@ FileAccess.Read, FileShare.ReadWrite))
                         int n = int.Parse(nums[i].Split(':')[1]);
                         amounts.Add(n);
                     }
-                    //按照综合得分将每一个等级学生取出并赋予相应成绩
-                    //...
-                    //END
 
+                    //按照综合得分将每一个等级学生取出并赋予相应成绩
+                    var listSNo = RuleManager.GetSNoByScoreDesc(UserInfo.CourseNo, UserInfo.Semester);
+                    int beginIndex = 0, endIndex = 0;
+                    for (int i = 0; i < UserInfo.Type; i++)
+                    {
+                        string grade = gradeList[i];//应得等级
+                        int amount = amounts[i];//人数
+                        beginIndex += i == 0 ? 0 : amounts[i - 1];
+                        endIndex = beginIndex + amount;
+                        for (int j = beginIndex; j < endIndex; j++)
+                        {
+                            RuleManager.UpdateGrade(UserInfo.CourseNo, UserInfo.Semester, listSNo[j], grade);
+                        }
+                    }
+                    //END
+                    MessageBox.Show("设置成功");
                     //重载得分
-                    //...
+                    ShowDataGridView();
                     //END
                 }
                 else    //按照得分
@@ -302,14 +320,26 @@ FileAccess.Read, FileShare.ReadWrite))
                         points.Add(p);
                     }
                     //按照得分段将每一个等级学生取出并赋予相应成绩
-                    //...
-                    //END
+                    int highPoint = 0, lowPoint = 0;
+                    for (int i = 0; i < UserInfo.Type; i++)
+                    {
+                        string grade = gradeList[i];//应得等级
 
+                        highPoint = i == 0 ? 101 : points[i - 1];
+                        lowPoint = i == UserInfo.Type - 1 ? -1 : points[i];
+                        var listSNo = RuleManager.GetSNoByScoreLimit(UserInfo.CourseNo, UserInfo.Semester, lowPoint, highPoint);
+                        foreach (var sNo in listSNo)
+                            RuleManager.UpdateGrade(UserInfo.CourseNo, UserInfo.Semester, sNo, grade);
+                    }
+                    //END
+                    MessageBox.Show("设置成功");
                     //重载得分
-                    //...
+                    ShowDataGridView();
                     //END
                 }
+                //显示印象分一栏
 
+                //
                 //清除修改记录
                 Manual.Clear();
             }

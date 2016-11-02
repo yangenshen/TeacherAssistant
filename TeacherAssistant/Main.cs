@@ -13,7 +13,10 @@ namespace TeacherAssistant
 {
     public partial class Main : Form
     {
-        private HashSet<int> Manual = new HashSet<int>();//手动修改成绩的index编号集
+        private HashSet<int> Manual = new HashSet<int>();                               //手动修改成绩的index编号集
+        private bool ExistImpress = false;                                              //是否已经存在印象分一栏
+        private Dictionary<string, int> Grade_Num = new Dictionary<string, int>();      //等级人数
+        private double oldImpress;                                                      //原印象分        
 
         public Main()
         {
@@ -29,6 +32,7 @@ namespace TeacherAssistant
                 DataGridViewTextBoxColumn textColumnn = new DataGridViewTextBoxColumn();
                 textColumnn.ReadOnly = false;
                 textColumnn.HeaderText = text;
+                textColumnn.SortMode = DataGridViewColumnSortMode.Automatic;
                 dataGridView1.Columns.Add(textColumnn);
             }
             else
@@ -76,8 +80,14 @@ namespace TeacherAssistant
                     var assess = TeachManager.GetCourseAssessByName(UserInfo.CourseNo, UserInfo.Semester, dUnit[0]);
                     AddAssessColumn(dUnit[0].Substring(1, dUnit[0].Length - 1), assess.ScoreType);
                 }
-
-
+                //已经存在印象分就继续显示出来
+                if (ExistImpress == true)
+                {
+                    DataGridViewTextBoxColumn column = new DataGridViewTextBoxColumn();
+                    column.HeaderText = "印象分";
+                    column.ReadOnly = false;
+                    dataGridView1.Columns.Add(column);
+                }
                 //显示数据
                 foreach (var score in listScore)
                 {
@@ -88,7 +98,6 @@ namespace TeacherAssistant
                     dataGridView1.Rows[index].Cells[3].Value = score.StuName;
                     dataGridView1.Rows[index].Cells[4].Value = score.FinalScore;
                     dataGridView1.Rows[index].Cells[5].Value = score.Grade;
-
                     detailString = score.AssessDetails;
                     details = detailString.Split(';');
                     for (int i = 0; i < colCount; i++)
@@ -97,7 +106,11 @@ namespace TeacherAssistant
                         var dUnit = details[i].Split(':');
                         dataGridView1.Rows[index].Cells[6 + i].Value = dUnit[1];
                     }
+                    if (ExistImpress == true)
+                        dataGridView1.Rows[index].Cells[6 + colCount].Value = score.ImpressPoints;
+
                 }
+
             }
         }
 
@@ -138,7 +151,6 @@ namespace TeacherAssistant
                     break;
             }
         }
-
 
         protected override void OnClosing(CancelEventArgs e)
         {
@@ -233,7 +245,45 @@ FileAccess.Read, FileShare.ReadWrite))
 
         private void dataGridView1_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.ColumnIndex != 5)//修改考核得分
+            if (dataGridView1.Columns[e.ColumnIndex].HeaderText == "印象分")
+            {
+                var value = dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
+                if (value != null)
+                {
+                    double impress = 0.0;
+                    if (double.TryParse(value.ToString(), out impress))
+                    {
+                        if (impress == oldImpress)
+                            return;
+                        if (impress > 5 || impress < 0)
+                        {
+                            MessageBox.Show("印象分应该在0-5之间");
+                            dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = oldImpress;
+                            return;
+                        }
+                        double originPoint = double.Parse(dataGridView1.Rows[e.RowIndex].Cells[4].Value.ToString());
+                        double newPoint = Math.Round(originPoint + impress - oldImpress, 2);
+                        if (newPoint > 100)
+                        {
+                            MessageBox.Show("总分超过100了");
+                            dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = oldImpress;
+                            return;
+                        }
+                        //将新的总分和印象分写入数据库
+                        string cNo = dataGridView1.Rows[e.RowIndex].Cells[2].Value.ToString();
+                        ScoreManager.AddImpress(cNo, UserInfo.CourseNo, UserInfo.Semester, impress, newPoint);
+                        //更新显示
+                        dataGridView1.Rows[e.RowIndex].Cells[4].Value = newPoint;
+                        return;
+                    }
+                    else
+                    {
+                        MessageBox.Show("只能输入数字");
+                        return;
+                    }
+                }
+            }
+            else if (e.ColumnIndex != 5)//修改考核得分
             {
                 var value = dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
                 if (value != null)
@@ -245,7 +295,7 @@ FileAccess.Read, FileShare.ReadWrite))
 
                 }
             }
-            else//修改成绩
+            else//手动修改成绩
             {
                 //DO Nothing Now...
                 Manual.Add(e.RowIndex);
@@ -272,6 +322,8 @@ FileAccess.Read, FileShare.ReadWrite))
             }
             else
             {
+                //将原来存的等级：人数清空
+                Grade_Num.Clear();
                 //对应等级
                 string[] gradeList;
                 if (UserInfo.Type == 5)
@@ -297,6 +349,10 @@ FileAccess.Read, FileShare.ReadWrite))
                     {
                         string grade = gradeList[i];//应得等级
                         int amount = amounts[i];//人数
+
+                        //记录
+                        Grade_Num.Add(grade, amount);
+
                         beginIndex += i == 0 ? 0 : amounts[i - 1];
                         endIndex = beginIndex + amount;
                         for (int j = beginIndex; j < endIndex; j++)
@@ -328,20 +384,57 @@ FileAccess.Read, FileShare.ReadWrite))
                         highPoint = i == 0 ? 101 : points[i - 1];
                         lowPoint = i == UserInfo.Type - 1 ? -1 : points[i];
                         var listSNo = RuleManager.GetSNoByScoreLimit(UserInfo.CourseNo, UserInfo.Semester, lowPoint, highPoint);
+                        //记录
+                        Grade_Num.Add(grade, listSNo.Count);
                         foreach (var sNo in listSNo)
                             RuleManager.UpdateGrade(UserInfo.CourseNo, UserInfo.Semester, sNo, grade);
                     }
                     //END
-                    MessageBox.Show("设置成功");
+                    MessageBox.Show("设置成功，在提示可以继续操作之前请勿操作");
                     //重载得分
                     ShowDataGridView();
+
+                    ShowGradeNum();
                     //END
                 }
                 //显示印象分一栏
-
+                if (ExistImpress == false)
+                {
+                    ExistImpress = true;
+                    DataGridViewTextBoxColumn column = new DataGridViewTextBoxColumn();
+                    column.HeaderText = "印象分";
+                    column.ReadOnly = false;
+                    int endIndex = dataGridView1.Columns.Add(column);
+                    foreach (DataGridViewRow row in dataGridView1.Rows)
+                        row.Cells[endIndex].Value = ScoreManager.GetStuScore(UserInfo.CourseNo, row.Cells[2].Value.ToString(), UserInfo.Semester).ImpressPoints;
+                }
+                MessageBox.Show("可以继续操作");
                 //
                 //清除修改记录
                 Manual.Clear();
+            }
+        }
+
+        private void dataGridView1_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
+        {
+            if (dataGridView1.Columns[e.ColumnIndex].HeaderText == "印象分")
+            {
+                var value = dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value?.ToString();
+                if (string.IsNullOrWhiteSpace(value))
+                    oldImpress = 0.0;
+                else
+                    oldImpress = double.Parse(value);
+            }
+        }
+
+        private void ShowGradeNum()
+        {
+            dataGridView2.Rows.Clear();
+            foreach (var i in Grade_Num)
+            {
+                int index = dataGridView2.Rows.Add();
+                dataGridView2.Rows[index].Cells[0].Value = i.Key;
+                dataGridView2.Rows[index].Cells[1].Value = i.Value;
             }
         }
     }

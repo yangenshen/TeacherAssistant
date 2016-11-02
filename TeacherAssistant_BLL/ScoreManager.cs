@@ -140,5 +140,11 @@ namespace TeacherAssistant_BLL
             ScoreService.UpdateFinalScoreForStu(ss.StuNo, cNo, sem, finalScore);
             return finalScore;
         }
+
+
+        public static bool AddImpress(string sNo, string cNo, string sem, double impress, double newPoint)
+        {
+            return ScoreService.AddImpress(sNo, cNo, sem, impress, newPoint);
+        }
     }
 }

@@ -125,6 +125,7 @@
             this.dataGridView1.RowTemplate.Height = 27;
             this.dataGridView1.Size = new System.Drawing.Size(1228, 219);
             this.dataGridView1.TabIndex = 2;
+            this.dataGridView1.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.dataGridView1_CellBeginEdit);
             this.dataGridView1.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellEndEdit);
             // 
             // Column1
@@ -510,9 +511,10 @@
             // 
             // AutoGradeLabel
             // 
-            this.AutoGradeLabel.Location = new System.Drawing.Point(1119, 406);
+            this.AutoGradeLabel.AutoSize = true;
+            this.AutoGradeLabel.Location = new System.Drawing.Point(1084, 401);
             this.AutoGradeLabel.Name = "AutoGradeLabel";
-            this.AutoGradeLabel.Size = new System.Drawing.Size(91, 37);
+            this.AutoGradeLabel.Size = new System.Drawing.Size(92, 37);
             this.AutoGradeLabel.TabIndex = 29;
             this.AutoGradeLabel.Text = "自动算成绩";
             this.AutoGradeLabel.UseVisualStyleBackColor = true;

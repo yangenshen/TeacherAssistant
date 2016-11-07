@@ -86,11 +86,6 @@ namespace TeacherAssistant_DAL
             return listSNo;
         }
 
-        public static bool UpdateGrade(string cNo, string sem,string sNo,string grade)
-        {
-            string sql = string.Format("update StuScore set Grade = '{0}' where StuNo = '{1}' and CourseNo = '{2}' and Semester = '{3}'", grade, sNo, cNo, sem);
-            return DBHelper.ExecuteNonQuery(sql);
-        }
-
+        
     }
 }

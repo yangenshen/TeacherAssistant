@@ -82,5 +82,17 @@ namespace TeacherAssistant_DAL
             string sql = string.Format("update StuScore set FinalScore = {0},ImpressPoints = {1} where StuNo = '{2}' and CourseNo = '{3}' and Semester = '{4}'", newPoint, impress, sNo, cNo, sem);
             return DBHelper.ExecuteNonQuery(sql);
         }
+
+        public static bool UpdateGrade(string cNo, string sem, string sNo, string grade)
+        {
+            string sql = string.Format("update StuScore set Grade = '{0}' where StuNo = '{1}' and CourseNo = '{2}' and Semester = '{3}'", grade, sNo, cNo, sem);
+            return DBHelper.ExecuteNonQuery(sql);
+        }
+
+        public static bool ManualUpdateGrade(string cNo, string sem, string sNo, string grade)
+        {
+            string sql = string.Format("update StuScore set Grade = '{0}', Auto = false where StuNo = '{1}' and CourseNo = '{2}' and Semester = '{3}'", grade, sNo, cNo, sem);
+            return DBHelper.ExecuteNonQuery(sql);
+        }
     }
 }

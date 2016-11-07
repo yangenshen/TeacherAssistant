@@ -13,7 +13,6 @@ namespace TeacherAssistant
 {
     public partial class Main : Form
     {
-        private HashSet<int> Manual = new HashSet<int>();                               //手动修改成绩的index编号集
         private bool ExistImpress = false;                                              //是否已经存在印象分一栏
         private Dictionary<string, int> Grade_Num = new Dictionary<string, int>();      //等级人数
         private double oldImpress;                                                      //原印象分        
@@ -22,7 +21,26 @@ namespace TeacherAssistant
         {
             InitializeComponent();
             ShowLabels();
+            InitlGradeNum();
             ShowDataGridView();
+            ShowGradeNum();
+        }
+
+        private void InitlGradeNum()
+        {
+            switch (UserInfo.Type)
+            {
+                case 5:
+                    foreach (var i in GradeList.gradesFive)
+                        Grade_Num.Add(i, 0);
+                    break;
+                case 10:
+                    foreach (var i in GradeList.gradesTen)
+                        Grade_Num.Add(i, 0);
+                    break;
+                default:
+                    break;
+            }
         }
 
         private void AddAssessColumn(string text, int sType)
@@ -98,6 +116,10 @@ namespace TeacherAssistant
                     dataGridView1.Rows[index].Cells[3].Value = score.StuName;
                     dataGridView1.Rows[index].Cells[4].Value = score.FinalScore;
                     dataGridView1.Rows[index].Cells[5].Value = score.Grade;
+                    if (!string.IsNullOrEmpty(score.Grade))
+                    {
+                        Grade_Num[score.Grade]++;
+                    }
                     detailString = score.AssessDetails;
                     details = detailString.Split(';');
                     for (int i = 0; i < colCount; i++)
@@ -134,15 +156,18 @@ namespace TeacherAssistant
                 case CourseType.本科课程:
                     GradeLabel.Text = "十分制";
                     UserInfo.Type = 10;
+                    UserInfo.CType = CourseType.本科课程;
                     ((DataGridViewComboBoxColumn)dataGridView1.Columns[5]).Items.AddRange(GradeList.gradesTen);
                     break;
                 case CourseType.MBA课程:
                     UserInfo.Type = 5;
                     GradeLabel.Text = "五分制";
+                    UserInfo.CType = CourseType.MBA课程;
                     ((DataGridViewComboBoxColumn)dataGridView1.Columns[5]).Items.AddRange(GradeList.gradesFive);
                     break;
                 case CourseType.研究生课程:
                     UserInfo.Type = 5;
+                    UserInfo.CType = CourseType.研究生课程;
                     ((DataGridViewComboBoxColumn)dataGridView1.Columns[5]).Items.AddRange(GradeList.gradesFive);
                     GradeLabel.Text = "五分制";
                     break;
@@ -154,10 +179,29 @@ namespace TeacherAssistant
 
         protected override void OnClosing(CancelEventArgs e)
         {
-            if (this.Visible == true)
+            var obey = CheckRule();
+            if (obey == false)
             {
-                this.Hide();
-                Application.Exit();
+                if (MessageBox.Show("目前给定的成绩与学校规则相违背，确定离开吗", "Confirm Message", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK)
+                {
+                    if (this.Visible == true)
+                    {
+                        this.Hide();
+                        Application.Exit();
+                    }
+                }
+                else
+                {
+                    e.Cancel = true;
+                }
+            }
+            else
+            {
+                if (this.Visible == true)
+                {
+                    this.Hide();
+                    Application.Exit();
+                }
             }
         }
 
@@ -241,6 +285,7 @@ FileAccess.Read, FileShare.ReadWrite))
         private void ReloadButton_Click(object sender, EventArgs e)
         {
             ShowDataGridView();
+            MessageBox.Show("重载完毕");
         }
 
         private void dataGridView1_CellEndEdit(object sender, DataGridViewCellEventArgs e)
@@ -261,6 +306,7 @@ FileAccess.Read, FileShare.ReadWrite))
                             dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = oldImpress;
                             return;
                         }
+
                         double originPoint = double.Parse(dataGridView1.Rows[e.RowIndex].Cells[4].Value.ToString());
                         double newPoint = Math.Round(originPoint + impress - oldImpress, 2);
                         if (newPoint > 100)
@@ -297,8 +343,10 @@ FileAccess.Read, FileShare.ReadWrite))
             }
             else//手动修改成绩
             {
-                //DO Nothing Now...
-                Manual.Add(e.RowIndex);
+                var grade = dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
+                var sNo = dataGridView1.Rows[e.RowIndex].Cells[2].Value.ToString();
+                ScoreManager.ManualUpdateGrade(UserInfo.CourseNo, UserInfo.Semester, sNo, grade);
+                Grade_Num[grade]++;
             }
         }
 
@@ -357,7 +405,7 @@ FileAccess.Read, FileShare.ReadWrite))
                         endIndex = beginIndex + amount;
                         for (int j = beginIndex; j < endIndex; j++)
                         {
-                            RuleManager.UpdateGrade(UserInfo.CourseNo, UserInfo.Semester, listSNo[j], grade);
+                            ScoreManager.UpdateGrade(UserInfo.CourseNo, UserInfo.Semester, listSNo[j], grade);
                         }
                     }
                     //END
@@ -387,14 +435,16 @@ FileAccess.Read, FileShare.ReadWrite))
                         //记录
                         Grade_Num.Add(grade, listSNo.Count);
                         foreach (var sNo in listSNo)
-                            RuleManager.UpdateGrade(UserInfo.CourseNo, UserInfo.Semester, sNo, grade);
+                            ScoreManager.UpdateGrade(UserInfo.CourseNo, UserInfo.Semester, sNo, grade);
                     }
                     //END
                     MessageBox.Show("设置成功，在提示可以继续操作之前请勿操作");
                     //重载得分
                     ShowDataGridView();
-
+                    //更改显示
                     ShowGradeNum();
+                    //检测成绩是否符合学校规定
+                    CheckRule();
                     //END
                 }
                 //显示印象分一栏
@@ -409,9 +459,6 @@ FileAccess.Read, FileShare.ReadWrite))
                         row.Cells[endIndex].Value = ScoreManager.GetStuScore(UserInfo.CourseNo, row.Cells[2].Value.ToString(), UserInfo.Semester).ImpressPoints;
                 }
                 MessageBox.Show("可以继续操作");
-                //
-                //清除修改记录
-                Manual.Clear();
             }
         }
 
@@ -425,6 +472,11 @@ FileAccess.Read, FileShare.ReadWrite))
                 else
                     oldImpress = double.Parse(value);
             }
+            else if (dataGridView1.Columns[e.ColumnIndex].HeaderText == "成绩")
+            {
+                var grade = dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
+                Grade_Num[grade]--;
+            }
         }
 
         private void ShowGradeNum()
@@ -436,6 +488,117 @@ FileAccess.Read, FileShare.ReadWrite))
                 dataGridView2.Rows[index].Cells[0].Value = i.Key;
                 dataGridView2.Rows[index].Cells[1].Value = i.Value;
             }
+        }
+
+        /// <summary>
+        /// 导出到excel   
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ExportButton_Click(object sender, EventArgs e)
+        {
+            if (dataGridView1.Rows.Count == 0)
+            {
+                MessageBox.Show("无数据！");
+                return;
+            }
+            //设置对象
+            HSSFWorkbook wk = new HSSFWorkbook();
+            HSSFSheet st = (HSSFSheet)wk.CreateSheet("Weight");
+            //设置字体等
+            HSSFCellStyle style = (HSSFCellStyle)wk.CreateCellStyle();
+            HSSFFont font = (HSSFFont)wk.CreateFont();
+            font.FontName = "宋体";
+            font.FontHeightInPoints = 16;
+            style.SetFont(font);
+            style.Alignment = NPOI.SS.UserModel.HorizontalAlignment.Center; //居中对齐
+            //添加表头
+            HSSFRow dataRow = (HSSFRow)st.CreateRow(0);
+            for (int i = 0; i < dataGridView1.Columns.Count; i++)
+            {
+                dataRow.CreateCell(i).SetCellValue(dataGridView1.Columns[i].HeaderText);
+                dataRow.GetCell(i).CellStyle = style;
+            }
+            for (int i = 0; i < dataGridView1.Rows.Count; i++)
+            {
+                dataRow = (HSSFRow)st.CreateRow(i + 1);
+                for (int j = 0; j < dataGridView1.Columns.Count; j++)
+                {
+                    string Value = dataGridView1.Rows[i].Cells[j].Value.ToString();
+                    dataRow.CreateCell(j).SetCellValue(Value);
+                }
+            }
+            //自适应列宽度
+            for (int i = 0; i < dataGridView1.Rows.Count + 1; i++)
+            {
+                st.AutoSizeColumn(i);
+            }
+            string saveFileName = string.Empty;
+            SaveFileDialog saveDialog = new SaveFileDialog();
+            saveDialog.DefaultExt = "xls";
+            saveDialog.Filter = "Excel文件|*.xls";
+            saveDialog.FileName = "成绩.xls";
+            MemoryStream ms = new MemoryStream();
+            if (saveDialog.ShowDialog() == DialogResult.OK)
+            {
+                saveFileName = saveDialog.FileName;
+                wk.Write(ms);
+                FileStream file = new FileStream(saveFileName, FileMode.Create);
+                wk.Write(file);
+                file.Close();
+                wk = null;
+                ms.Close();
+                ms.Dispose();
+                MessageBox.Show("保存成功", "提示", MessageBoxButtons.OK);
+            }
+        }
+
+        private void ReportLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Report rt = new Report(Grade_Num);
+            rt.ShowDialog();
+        }
+
+        private bool CheckRule()
+        {
+            double pro = 0.0;
+            bool result = true;
+            switch (UserInfo.CType)
+            {
+                case CourseType.本科课程:
+                    //A和A-不能超过30%
+                    pro = (Grade_Num["A"] + Grade_Num["A-"]) / (double)UserInfo.NumOfStu;
+                    if (pro > GradeLimit.AofU)
+                    {
+                        MessageBox.Show(GradeLimit.AofU_AlertMs);
+                        result = false;
+                    }
+                    break;
+                case CourseType.MBA课程:
+                    pro = Grade_Num["A"] / (double)UserInfo.NumOfStu;
+                    if (pro > GradeLimit.AofMBA)
+                    {
+                        MessageBox.Show(GradeLimit.AofMBA_AlertMs);
+                        result = false;
+                    }
+                    if (Grade_Num["D"] + Grade_Num["F"] < GradeLimit.LowofMBA)
+                    {
+                        MessageBox.Show(GradeLimit.LowofMBA_AlertMs);
+                        result = false;
+                    }
+                    break;
+                case CourseType.研究生课程:
+                    pro = Grade_Num["A"] / (double)UserInfo.NumOfStu;
+                    if (pro > GradeLimit.AofP)
+                    {
+                        MessageBox.Show(GradeLimit.AofP_AlertMs);
+                        result = false;
+                    }
+                    break;
+                default:
+                    break;
+            }
+            return result;
         }
     }
 }

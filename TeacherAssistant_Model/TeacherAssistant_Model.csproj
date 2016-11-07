@@ -82,6 +82,7 @@
     <Compile Include="Assessment.cs" />
     <Compile Include="Constant\AssessType.cs" />
     <Compile Include="Constant\CourseType.cs" />
+    <Compile Include="Constant\GradeLimit.cs" />
     <Compile Include="Constant\GradeList.cs" />
     <Compile Include="Constant\ScoreType.cs" />
     <Compile Include="Course.cs" />

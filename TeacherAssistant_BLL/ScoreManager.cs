@@ -146,5 +146,15 @@ namespace TeacherAssistant_BLL
         {
             return ScoreService.AddImpress(sNo, cNo, sem, impress, newPoint);
         }
+
+        public static bool UpdateGrade(string cNo, string sem, string sNo, string grade)
+        {
+            return ScoreService.UpdateGrade(cNo, sem, sNo, grade);
+        }
+
+        public static bool ManualUpdateGrade(string cNo, string sem, string sNo, string grade)
+        {
+            return ScoreService.ManualUpdateGrade(cNo, sem, sNo, grade);
+        }
     }
 }

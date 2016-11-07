@@ -54,10 +54,5 @@ namespace TeacherAssistant_BLL
             return RuleService.GetSNoByScoreLimit(cNo, sem, plow, phigh);
         }
 
-        public static bool UpdateGrade(string cNo, string sem, string sNo, string grade)
-        {
-            return RuleService.UpdateGrade(cNo, sem, sNo, grade);
-        }
-
     }
 }

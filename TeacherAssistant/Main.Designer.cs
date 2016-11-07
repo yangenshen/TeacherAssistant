@@ -73,8 +73,9 @@
             this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton4 = new System.Windows.Forms.ToolStripButton();
-            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
+            this.ReportLabel = new System.Windows.Forms.LinkLabel();
             this.AutoGradeLabel = new System.Windows.Forms.Button();
+            this.ExportButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView3)).BeginInit();
@@ -347,9 +348,9 @@
             this.ClassLabel.AutoSize = true;
             this.ClassLabel.Location = new System.Drawing.Point(1005, 412);
             this.ClassLabel.Name = "ClassLabel";
-            this.ClassLabel.Size = new System.Drawing.Size(63, 15);
+            this.ClassLabel.Size = new System.Drawing.Size(37, 15);
             this.ClassLabel.TabIndex = 20;
-            this.ClassLabel.Text = "label17";
+            this.ClassLabel.Text = "二班";
             // 
             // TeacherNameLable
             // 
@@ -499,15 +500,16 @@
             this.toolStripButton4.Text = "成绩规则";
             this.toolStripButton4.Click += new System.EventHandler(this.toolStripButton4_Click);
             // 
-            // linkLabel1
+            // ReportLabel
             // 
-            this.linkLabel1.LinkArea = new System.Windows.Forms.LinkArea(0, 6);
-            this.linkLabel1.Location = new System.Drawing.Point(295, 665);
-            this.linkLabel1.Name = "linkLabel1";
-            this.linkLabel1.Size = new System.Drawing.Size(160, 30);
-            this.linkLabel1.TabIndex = 28;
-            this.linkLabel1.TabStop = true;
-            this.linkLabel1.Text = "课程成绩报告";
+            this.ReportLabel.LinkArea = new System.Windows.Forms.LinkArea(0, 6);
+            this.ReportLabel.Location = new System.Drawing.Point(295, 665);
+            this.ReportLabel.Name = "ReportLabel";
+            this.ReportLabel.Size = new System.Drawing.Size(160, 30);
+            this.ReportLabel.TabIndex = 28;
+            this.ReportLabel.TabStop = true;
+            this.ReportLabel.Text = "课程成绩报告";
+            this.ReportLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.ReportLabel_LinkClicked);
             // 
             // AutoGradeLabel
             // 
@@ -520,13 +522,24 @@
             this.AutoGradeLabel.UseVisualStyleBackColor = true;
             this.AutoGradeLabel.Click += new System.EventHandler(this.AutoGradeLabel_Click);
             // 
+            // ExportButton
+            // 
+            this.ExportButton.Location = new System.Drawing.Point(917, 100);
+            this.ExportButton.Name = "ExportButton";
+            this.ExportButton.Size = new System.Drawing.Size(91, 32);
+            this.ExportButton.TabIndex = 30;
+            this.ExportButton.Text = "导出成绩";
+            this.ExportButton.UseVisualStyleBackColor = true;
+            this.ExportButton.Click += new System.EventHandler(this.ExportButton_Click);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1228, 728);
+            this.Controls.Add(this.ExportButton);
             this.Controls.Add(this.AutoGradeLabel);
-            this.Controls.Add(this.linkLabel1);
+            this.Controls.Add(this.ReportLabel);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.dataGridView3);
             this.Controls.Add(this.GradeLabel);
@@ -613,7 +626,7 @@
         private System.Windows.Forms.ToolStripButton toolStripButton2;
         private System.Windows.Forms.ToolStripButton toolStripButton3;
         private System.Windows.Forms.ToolStripButton toolStripButton4;
-        private System.Windows.Forms.LinkLabel linkLabel1;
+        private System.Windows.Forms.LinkLabel ReportLabel;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
@@ -621,5 +634,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column5;
         private System.Windows.Forms.DataGridViewComboBoxColumn Column6;
         private System.Windows.Forms.Button AutoGradeLabel;
+        private System.Windows.Forms.Button ExportButton;
     }
 }

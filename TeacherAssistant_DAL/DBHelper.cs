@@ -11,7 +11,10 @@ namespace TeacherAssistant_DAL
 {
     public class DBHelper
     {
-        private static string connString = "Provider=Microsoft.ACE.OLEDB.12.0; Data Source=E:/TeacherAssistant/TeacherAssistant/App_Data/StuDB.accdb;Persist Security Info = False";
+        //绝对路径
+        //private static string connString = "Provider=Microsoft.ACE.OLEDB.12.0; Data Source=E:/TeacherAssistant/TeacherAssistant/App_Data/StuDB.accdb;Persist Security Info = False";
+        //相对路径
+        private static string connString = "Provider=Microsoft.ACE.OLEDB.12.0; Data Source=" + AppDomain.CurrentDomain.BaseDirectory + "App_Data\\StuDB.accdb;Persist Security Info = False";
 
         private static OleDbConnection conn = null;
 

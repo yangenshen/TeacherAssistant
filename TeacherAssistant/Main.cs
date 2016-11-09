@@ -399,7 +399,7 @@ FileAccess.Read, FileShare.ReadWrite))
                         int amount = amounts[i];//人数
 
                         //记录
-                        Grade_Num.Add(grade, amount);
+                        Grade_Num.Add(grade, 0);
 
                         beginIndex += i == 0 ? 0 : amounts[i - 1];
                         endIndex = beginIndex + amount;
@@ -433,7 +433,7 @@ FileAccess.Read, FileShare.ReadWrite))
                         lowPoint = i == UserInfo.Type - 1 ? -1 : points[i];
                         var listSNo = RuleManager.GetSNoByScoreLimit(UserInfo.CourseNo, UserInfo.Semester, lowPoint, highPoint);
                         //记录
-                        Grade_Num.Add(grade, listSNo.Count);
+                        Grade_Num.Add(grade, 0);
                         foreach (var sNo in listSNo)
                             ScoreManager.UpdateGrade(UserInfo.CourseNo, UserInfo.Semester, sNo, grade);
                     }

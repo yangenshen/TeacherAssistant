@@ -278,6 +278,11 @@ FileAccess.Read, FileShare.ReadWrite))
 
         private void toolStripButton2_Click(object sender, EventArgs e)
         {
+            if (UserInfo.NumOfStu == 0)
+            {
+                MessageBox.Show("尚未导入学生数据");
+                return;
+            }
             Assessment assm = new Assessment();
             assm.ShowDialog();
         }
@@ -391,7 +396,7 @@ FileAccess.Read, FileShare.ReadWrite))
                     }
 
                     //按照综合得分将每一个等级学生取出并赋予相应成绩
-                    var listSNo = RuleManager.GetSNoByScoreDesc(UserInfo.CourseNo, UserInfo.Semester);
+                    var listSNo = RuleManager.GetSNoByScoreDesc(UserInfo.Semester, UserInfo.CourseNo);
                     int beginIndex = 0, endIndex = 0;
                     for (int i = 0; i < UserInfo.Type; i++)
                     {
@@ -408,11 +413,6 @@ FileAccess.Read, FileShare.ReadWrite))
                             ScoreManager.UpdateGrade(UserInfo.CourseNo, UserInfo.Semester, listSNo[j], grade);
                         }
                     }
-                    //END
-                    MessageBox.Show("设置成功");
-                    //重载得分
-                    ShowDataGridView();
-                    //END
                 }
                 else    //按照得分
                 {
@@ -437,16 +437,15 @@ FileAccess.Read, FileShare.ReadWrite))
                         foreach (var sNo in listSNo)
                             ScoreManager.UpdateGrade(UserInfo.CourseNo, UserInfo.Semester, sNo, grade);
                     }
-                    //END
-                    MessageBox.Show("设置成功，在提示可以继续操作之前请勿操作");
-                    //重载得分
-                    ShowDataGridView();
-                    //更改显示
-                    ShowGradeNum();
-                    //检测成绩是否符合学校规定
-                    CheckRule();
-                    //END
                 }
+                MessageBox.Show("设置成功，在提示可以继续操作之前请勿操作");
+                //重载得分
+                ShowDataGridView();
+                //更改显示
+                ShowGradeNum();
+                //检测成绩是否符合学校规定
+                CheckRule();
+                //END
                 //显示印象分一栏
                 if (ExistImpress == false)
                 {

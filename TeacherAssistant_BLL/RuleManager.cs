@@ -18,7 +18,7 @@ namespace TeacherAssistant_BLL
         public static bool ExistRule(string cNo, string sem)
         {
             Rule rule = GetRule(cNo, sem);
-            return rule.CourseNo != null ;
+            return rule.NumDetails != null ;
         }
 
         public static Rule GetRule(string cNo, string sem)

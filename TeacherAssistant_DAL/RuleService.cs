@@ -62,7 +62,7 @@ namespace TeacherAssistant_DAL
 
         public static List<string> GetSNoBySocreDesc(string cNo, string sem)
         {
-            string sql = string.Format("select StuNo from StuScore ordey by FinalScore desc where CourseNo = '{0}' and Semester = '{1}'", cNo, sem);
+            string sql = string.Format("select StuNo from StuScore where CourseNo = '{0}' and Semester = '{1}' order by FinalScore desc", cNo, sem);
             List<string> listSNo = new List<string>();
             DataTable dt = DBHelper.GetDataTable(sql);
             if (dt != null && dt.Rows.Count != 0)
